@@ -1,0 +1,98 @@
+@ layout("/common/_container.html"){
+<script type="text/javascript">
+	var ctx = "${ctxPath}";
+	var grid_selector = "#grid-table";
+	var pager_selector = "#grid-pager";
+	var _filter = "";//如果点了搜索按钮想让过滤条件失效,则将定义放入initGrid()中
+	
+	$(function(){
+		initGrid();
+		initMenuBtn("btns","protocol");
+	});
+	
+	function initGrid(){
+		var grid_url = ctx + "/${code}/list_protocol";//查询列表接口
+		var _colnames=[ "序列","通知标题", "公告类型", "公告类型", "创建人", "创建时间", "发布时间"];
+		var _colmodel=[   {name:"F_IT_XL", index:"F_IT_XL", width:80, hidden:true},
+						  {name:"F_VC_BT", index:"F_VC_BT", width:250},
+						  {name:"F_IT_LX", index:"F_IT_LX", width:80, hidden:true},
+						  {name:"DIC_F_IT_LX", index:"F_IT_LX", width:80, formatter:rowShow},
+						  {name:"DIC_F_IT_CJR", index:"F_IT_CJR", width:80},
+						  {name:"F_DT_CJSJ", index:"F_DT_CJSJ", width:135, align:"center"},
+						  {name:"F_DT_FBSJ", index:"F_DT_FBSJ", width:135, align:"center"}
+						];
+		
+		@ if (shiro.lacksRole('administrator')) {
+			_filter = '{"F_IT_CJR_equal":"${shiro.getUser().id}"}';//过滤,只看到自己发布,若是管理员则看到全部
+		@ }
+		
+		
+		jQuery(grid_selector).jqGrid({
+			url:grid_url,
+		    shrinkToFit:false,//适用于较少字段,响应式
+			colNames:_colnames,
+			colModel:_colmodel, 
+			jsonReader:{id : "F_IT_XL"},
+			pager : pager_selector,
+			postData: {where: _filter, sort: "F_IT_XL", order: "desc"}
+		});
+
+	}
+	
+	function rowShow(cellvalue, options, rowObject) {
+		var lx = rowObject.F_IT_LX;
+		var sclass = "";
+		switch (lx) {
+		case 1:
+			sclass = "label label-info arrowed-right arrowed-in";
+			break;
+		case 2:
+			sclass = "label label-success arrowed arrowed-right";
+			break;
+		case 3:
+			sclass = "label label-info arrowed arrowed-in-right";
+			break;
+		case 4:
+			sclass = "label label-warning arrowed arrowed-right";
+			break;
+		case 5:
+			sclass = "label label-danger arrowed arrowed-right";
+			break;
+		case 6:
+			sclass = "label label-danger arrowed arrowed-in-right";
+			break;
+		case 7:
+			sclass = "label arrowed arrowed-right";
+			break;
+			default:
+				sclass = "label label-info arrowed-right arrowed-in";
+			break;
+		}
+		
+		var html = "<span class='" + sclass + "'>" + rowObject.DIC_F_IT_LX + "</span>";
+		return html;
+	}
+	
+</script>
+
+
+	<!-- 配置grid -->
+	<div class="row">	
+		<div class="col-xs-12 tb-grid">
+			<!-- 配置查询 -->
+			@ var _col=[
+			@			  {name:"标题",index:"F_VC_BT", type:"text"}
+			@		   ];
+			@ include("/common/_function/_search_multi.html",{"col":_col}){}
+			<!-- 按钮组 -->
+			<div class="welljq well-sm" id="btns"></div>
+			<!-- grid -->
+			<table id="grid-table"></table>
+			<!-- 分页 -->
+			<div id="grid-pager"></div>
+		</div>
+	</div>
+	
+	<!-- 引入列表页所需js -->
+	@include("/common/_listscript.html"){}
+@}	

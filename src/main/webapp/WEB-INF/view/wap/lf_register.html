@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>注册_聚宝资讯</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="${ctxPath}/static/lfgj/mui/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="${ctxPath}/static/lfgj/mui/app.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-control-content mui-active" style="margin-top: 10px;">
+            	<form>
+                    <ul class="mui-table-view">
+                        <li class="mui-table-view-cell">
+                            <div class="mui-collapse-content">
+                                <div class="mui-input-group">
+                                    <div class="mui-input-row">
+                                        <label>手机号</label>
+                                        <input type="text" id="phone" class="mui-input-clear" placeholder="请输入注册手机号">
+                                    </div>
+                                    <div class="mui-input-row">
+                                        <label>验证码</label>
+                                        <input type="number" id="code" class="input-phone-code" placeholder="输入验证码">
+                                        <button id="hqyzm" type="button" class="mui-btn mui-btn-primary phone-code-btn">获取验证码</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="mui-table-view" style=" margin-top:10px;">
+                        <li class="mui-table-view-cell">
+                            <div class="mui-collapse-content">
+                                <div class="mui-input-group">
+                                    <div class="mui-input-row">
+                                        <label>真实姓名</label>
+                                        <input type="text" id="real_name" class="mui-input-clear" placeholder="请输入真实姓名">
+                                    </div>
+                                    <div class="mui-input-row mui-password">
+                                        <label>确认密码</label>
+                                        <input type="password" id="password" class="mui-input-password" placeholder="6~16位数字和字母组成">
+                                    </div>
+                                    <div class="mui-input-row">
+                                        <label>推荐码</label>
+                                        <input type="number" id="tuijian" class="" value="${agent!}" placeholder="请输入推荐码">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="mui-content-padded" style=" margin-top:30px;">
+                        <button type="button" id="commit" class="mui-btn mui-btn-primary mui-btn-block">确定</button>
+                    </div>
+				</form>
+            </div>
+		</div>
+	</body>
+	<script src="${ctxPath}/static/lfgj/mui/mui.min.js"></script>
+
+    <script>
+	    mui.init({
+	    	swipeBack:true //启用右滑关闭功能
+	    });
+	    	
+	    //获取验证码倒计时
+	    var wait=60;
+	    function time(o) {
+	    	if(wait == 0){
+	    		o.removeAttribute("disabled");
+	    		o.innerHTML="重新获取";
+	    		o.style.backgroundColor="";
+	    		o.style.color="";
+	    		o.style.borderColor="";		
+	    		wait = 60;
+	    	} else {
+	    		o.setAttribute("disabled", true);
+	    		o.innerHTML="" + wait + "秒后重试";
+	    		o.style.backgroundColor="#eee";
+	    		o.style.color="#999";
+	    		o.style.borderColor="#eee";
+	    		wait--;
+	    		setTimeout(function() {
+	    			time(o);
+	    		},1000);
+	    	}
+	    }
+	 
+	    document.getElementById("hqyzm").addEventListener('tap', function() {
+	    	var btn = document.getElementById("hqyzm");
+	    	var mobile = document.getElementById("phone").value;
+	    	var obj = {
+	    				mobile: mobile
+	    			};
+	    	mui.ajax("../clientService?serviceId=lf_sendsms&iscrypt=2", {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				data: obj,
+				timeout: 10000, //超时时间设置为10秒；
+				headers: {
+					'Accept': 'application/json'
+				},
+				success: function(data) {
+					//服务器返回响应
+					if(data.returnCode == 0){
+						time(btn);
+		    			mui.toast('已发送验证码短信');
+					}else{
+						mui.toast(data.returnMsg);
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+				}
+			});
+	    });
+	
+	    document.getElementById("commit").addEventListener('tap',function(){
+	    	var mobile = document.getElementById("phone").value;
+	    	var code = document.getElementById("code").value;
+	    	var real_name = document.getElementById("real_name").value;
+	    	var password = document.getElementById("password").value;
+	    	var tuijian = document.getElementById("tuijian").value;
+	    	if(mobile.length == 0) {
+	    		mui.toast('手机号码不能为空');
+	    		return;
+	    	}
+	    	if(code.length == 0) {
+	    		mui.toast('验证码不能为空');
+	    		return;
+	    	}
+	    	if(real_name.length == 0) {
+	    		mui.toast('真实姓名不能为空');
+	    		return;
+	    	}
+	    	if(password.length == 0) {
+	    		mui.toast('密码不能为空');
+	    		return;
+	    	}
+	    	var obj = {
+	    				mobile: mobile,
+	    				code: code,
+	    				real_name: real_name,
+	    				password: password,
+	    				tuijian: tuijian
+	    			};
+	    	mui.ajax("../clientService?serviceId=lfgj_personRegister&iscrypt=2", {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				data: obj,
+				timeout: 10000, //超时时间设置为10秒；
+				headers: {
+					'Accept': 'application/json'
+				},
+				success: function(data) {
+					//服务器返回响应
+					if(data.returnCode == 0){
+						mui.toast('注册成功');
+						location.href="${ctxPath}/download";
+					}else{
+						mui.toast(data.returnMsg);
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+				}
+			});
+	    })
+    </script>
+</html>

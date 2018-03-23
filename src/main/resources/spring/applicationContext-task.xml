@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-4.3.xsd ">
+
+	<!-- 0/5 0 1 * * ? [秒] [分] [小时] [日] [月] [周] [年] -->
+	<!-- <bean id="globalTask" class="com.rrgy.common.task.GlobalTask"></bean> -->
+	<task:annotation-driven />
+	
+	<!-- <bean id="loadPayTask" class="com.lfgj.task.PayTask"></bean>
+	<bean id="loadKlineTask" class="com.lfgj.task.KLineTask"></bean>
+	<bean id="loadTradeSallTask" class="com.lfgj.task.TradeSaleAllTask"></bean>
+	<bean id="loadInitAdjustTask" class="com.lfgj.task.InitAdjustTask"></bean>
+	<task:scheduled-tasks>
+		<task:scheduled ref="loadKlineTask" method="run" cron="0 30 7 * * ?" />
+		<task:scheduled ref="loadTradeSallTask" method="run" cron="0 5 4 * * ?" />
+		<task:scheduled ref="loadInitAdjustTask" method="run" cron="0 5 0 * * ?" />
+		<task:scheduled ref="loadPayTask" method="run" cron="0 0/30 * * * ?" />
+		
+	</task:scheduled-tasks> -->
+
+</beans>

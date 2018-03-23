@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>下载_聚宝资讯</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="${ctxPath}/static/lfgj/mui/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="${ctxPath}/static/lfgj/mui/app.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">APP下载</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-control-content mui-active" style="margin-top: 10px;margin-left:10%;margin-right:10%;">
+            	<form>
+           		  	<div class="mui-content-padded" style=" margin-top:30px;text-align:center;">
+           		  		<div class="share-info" id="qrcode"></div>
+           		  	</div>
+                    <div class="mui-content-padded" style=" margin-top:10px;">
+                        <button id="android" type="button" class="mui-btn mui-btn-primary mui-btn-block">Android 下载</button>
+                    </div>
+                    <div class="mui-content-padded" style=" margin-top:30px;text-align:center;">
+           		  		 <div class="share-info" id="qrcode1"></div>
+           		  	</div>
+                   <div class="mui-content-padded" style=" margin-top:30px;">
+                        <button id="ios" type="button" class="mui-btn mui-btn-primary mui-btn-block">IOS扫一扫下载</button>
+                    </div>
+				</form>
+            </div>
+		</div>
+	</body>
+	<script src="${ctxPath}/static/lfgj/mui/mui.min.js"></script>
+	<script src="${ctxPath}/static/jquery/jquery-1.8.3.js"></script>
+	<script src="${ctxPath}/static/assets/js/jquery.qrcode.min.js"></script>
+
+    <script>
+	    mui.init({
+	    	swipeBack:true //启用右滑关闭功能
+	    });
+	    $(function(){
+	    	var android = "${android}";
+	    	$('#qrcode').qrcode({width:120,height:120,correctLevel:0,text:android});
+	    	var ios = "${ios}";
+	    	$('#qrcode1').qrcode({width:120,height:120,correctLevel:0,text:ios});
+	    });
+	    document.getElementById("android").addEventListener('tap',function(){
+	    	var url = "${android}";
+	    	window.open(url);
+	    });
+ 		document.getElementById("ios").addEventListener('tap',function(){
+ 			var url = "${ios}";
+ 			window.open(url);
+	    });
+    </script>
+</html>

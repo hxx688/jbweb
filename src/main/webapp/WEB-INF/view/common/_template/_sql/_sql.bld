@@ -1,0 +1,7 @@
+list
+===
+select *,0 from ${tableName}
+
+findOne
+===
+select * from ${tableName} where ${pkName} = #{id}

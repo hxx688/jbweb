@@ -1,0 +1,1256 @@
+/*
+ *这是单独为hello mui准备的个性化css，可以覆盖标准mui的css定义；
+ * 在实际项目开发时，建议为App单独写一个css文件，从而实现项目的自定义皮肤功能；
+ * 
+ * */
+
+.mui-table-view-cell2{
+	background-color: #efeff4;
+}
+.mui-plus .mui-bar-nav~.mui-content{
+	padding: 0;
+}
+
+/*hm开头的表示仅为 Hello MUI示例定义*/
+.hm-description{
+	margin: .5em 0;
+}
+
+.hm-description>li {
+	font-size: 14px;
+	color: #8f8f94;
+}
+
+.float-l{
+	float:left;
+}
+
+/*********************藏宝金融_app*********************/
+
+/******我的******/
+/*我的标题栏*/
+.mui-title-name{
+	display:inline-block;
+	float:left;
+	width:100%;
+	height:18px;
+	line-height:18px;
+	font-size:16px;
+	margin-top:6px;
+}
+.mui-title-number{
+	display:inline-block;
+	float:left;
+	width:100%;
+	height:16px;
+	line-height:16px;
+	font-size:12px;
+}
+/*余额*/
+.index-top-bg{
+	background:#2f374a;
+	height:200px;
+	padding:0 20px;
+}
+.index-my-money{
+	float:left;
+	width:100%;
+	height:144px;
+	padding:27px 0;
+}
+.index-my-money-title{
+	display:block;
+	float:left;
+	width:100%;
+	font-size:10px;
+	line-height:30px;
+	line-height:30px;
+	color:#c2d4ff;
+	text-align:center;
+}
+.index-my-money-number{
+	display:block;
+	float:left;
+	width:100%;
+	font-size:40px;
+	height:60ppx;
+	line-height:60px;
+	color:#fff;
+	text-align:center;
+}
+.index-my-money-button{
+	float:left;
+	width:100%;
+	height:56px;
+}
+.index-my-button-half{
+	float:left;
+	width:50%;
+	padding:0 20px;
+}
+a.my-money-button{
+	display:inline-block;
+	width:100%;
+	height:36px;
+	line-height:36px;
+	font-size:16px;
+	color:#fff;
+	background:#477bf3;
+	border-radius:3px;
+	text-align:center;
+}
+/*图标*/
+.tabbar-with-my .my-icon{
+	font-size:24px;
+	line-height:24px;
+	margin-right:10px;
+	float:left;
+}
+.tabbar-with-my .icon-my-transaction{
+	color:#4ba03a;
+}
+.tabbar-with-my .icon-my-Withdrawals{
+	color:#ff683f;
+}
+.tabbar-with-my .icon-my-Record{
+	color:#5e6be3;
+}
+.tabbar-with-my .icon-my-Password{
+	color:#34b7af;
+}
+.tabbar-with-my .icon-my-share{
+	color:#ff5454;
+}
+.tabbar-with-my .icon-my-clause{
+	color:#477bf3;
+}
+.tabbar-with-my .icon-Help-product{
+	color:#50abf2;
+	font-size:20px;
+}
+.tabbar-with-my .icon-Help-play{
+	color:#ff7944;
+	font-size:16px;
+	margin-right:8px;
+}
+.tabbar-with-my .icon-Hep-security{
+	color:#52ae36;
+}
+.tabbar-with-my .icon-Help-risk{
+	color:#34b7af;
+}
+.tabbar-with-my .icon-Help-name{
+	color:#aa81fc;
+}
+.tabbar-with-my .icon-Help-operation{
+	color:#ff7979;
+}
+
+/******资讯******/
+.mui-table h4{
+	line-height: 21px;
+	font-weight: 500;
+}
+/******首页******/
+/*新闻*/
+.icon-index-hot-new{
+	font-size:14px;
+	color:#477bf3;
+	float:left;
+	margin-right:10px;
+}
+.index-new-icon{
+	display:block;
+	float:right;
+	width:18px;
+	height:10px;
+	background:url(../images/index_new_icon.png);
+	background-position:center;
+	background-size:18px 10px;
+	position:absolute;
+	right:36px;
+	top:10px;
+}
+/*通用栏目名称*/
+.app-title{
+	height:36px;
+	line-height:16px;
+	color:#747c81;
+	padding:10px;
+}
+.app-title i{
+	display:inline-block;
+	height:14px;
+	width:2px;
+	background:#477bf3;
+	float:left;
+	margin:1px 0;
+}
+.app-title h2{
+	font-size:14px;
+	line-height:16px;
+	font-weight:500;
+	float:left;
+	margin:0 0 0 6px;
+	padding:0;
+}
+.app-title a{
+	color:#747c81;
+	font-size:12px;
+	float:right;
+}
+.app-title a .iconfont{
+	font-size:12px;
+	color:#747c81;
+}
+/*产品列表*/
+.index-product-list{
+	height:60px;
+	line-height:40px;
+}
+.index-product-list-info{
+	float:right;
+}
+.index-product-list-old{
+	margin-top:2px;
+	float:right;
+	font-size:12px;
+	color:#666;
+	text-align:right;
+	line-height:18px;
+}
+/*涨*/
+.index-product-number-up{
+	float:right;
+}
+.icon-up{
+	font-size:14px;
+	float:left;
+	margin-right:5px;
+	color:#ff3636;
+}
+.product-up-number-info{
+	font-size:14px;
+	float:left;
+	color:#ff3636;
+}
+.index-product-up{
+	float:right;
+	display:inline-block;
+	padding:0 8px;
+	background:#ff3636;
+	height:18px;
+	line-height:19px;
+	font-size:12px;
+	color:#fff;
+	margin:10px 20px 0 20px;
+}
+/*跌*/
+.index-product-number-down{
+	float:right;
+}
+.icon-down{
+	font-size:14px;
+	float:left;
+	margin-right:5px;
+	color:#32af58;
+}
+.product-down-number-info{
+	font-size:14px;
+	float:left;
+	color:#32af58;
+}
+.index-product-down{
+	float:right;
+	display:inline-block;
+	padding:0 10px;
+	background:#32af58;
+	height:18px;
+	line-height:19px;
+	font-size:12px;
+	color:#fff;
+	margin:10px 20px 0 20px;
+}
+@media screen and (max-width: 374px) {
+/*涨*/
+.index-product-up{
+	padding:0 4px;
+	margin:10px 10px 0 10px;
+}
+/*跌*/
+.index-product-down{
+	padding:0 6px;
+	margin:10px 10px 0 10px;
+}
+}
+
+/*首页尾部信息*/
+.index-copyright p{
+	margin-top:10px;
+	text-align:center;
+	font-size:10px;
+	color:#a3aaaf;
+	line-height:20px;
+}
+
+/******持仓******/
+/*持仓统计*/
+.Position-info-top{
+	width:100%;
+	height:125px;
+	background:#2f374a;
+	text-align:center;
+}
+/*持仓单数*/
+.Position-list-number{
+	float:left;
+	width:25%;
+	height:100%;
+	padding:36px 10px 0 10px;
+	background:url(../images/Position_trade_number_icon.gif) no-repeat right center;
+	background-size:2px 46px;
+}
+.Position-list-number-title{
+	display:inline-block;
+	width:100%;
+	color:#c2d4ff;
+	font-size:12px;
+	height:18px;
+	line-height:18px;
+}
+.Position-list-number-info{	
+	display:inline-block;
+	width:100%;
+	color:#fff;
+	font-size:18px;
+	height:40px;
+	line-height:40px;
+}
+/*持仓盈亏*/
+.Position-Profit-number{
+	float:left;
+	width:50%;
+	height:100%;
+	padding:36px 10px 0 10px;
+}
+.Position-Profit-number-title{
+	display:inline-block;
+	width:100%;
+	color:#c2d4ff;
+	font-size:12px;
+	height:18px;
+	line-height:18px;
+}
+.Position-Profit-number-info-up{
+	display:inline-block;
+	width:100%;
+	color:#ff5656;
+	font-size:24px;
+	height:40px;
+	line-height:40px;
+}
+.Position-Profit-number-info-down{
+	display:inline-block;
+	width:100%;
+	color:#36e09a;
+	font-size:24px;
+	height:40px;
+	line-height:40px;
+}
+/*持仓手数*/
+.Position-trade-number{
+	float:left;
+	width:25%;
+	height:100%;
+	padding:36px 10px 0 10px;
+	background:url(../images/Position_trade_number_icon.gif) no-repeat left center;
+	background-size:2px 46px;
+}
+.Position-trade-number-title{
+	display:inline-block;
+	width:100%;
+	color:#c2d4ff;
+	font-size:12px;
+	height:18px;
+	line-height:18px;
+}
+.Position-trade-number-info{
+	display:inline-block;
+	width:100%;
+	color:#fff;
+	font-size:18px;
+	height:40px;
+	line-height:40px;
+}
+
+/*持仓列表*/
+.Position-list{
+	padding:0;
+}
+.Position-list-title{
+	width:100%;
+	padding:0 15px;
+	height:32px;
+	line-height:32px;
+	border-bottom:1px solid #eee;
+}
+.Position-list-id{
+	float:left;
+	font-size:12px;
+	color:#999;
+}
+.Position-list-time{
+	float:right;
+	font-size:12px;
+	color:#999;
+}
+.Position-list-info{
+	padding:0 15px;
+	height:48;
+	line-height:48px;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.Position-list-info .index-product-up{
+	margin:14px 0 0 20px;
+}
+.Position-list-info .index-product-down{
+	margin:14px 0 0 20px;
+}
+.Position-list-info-id{
+	font-size:12px;
+}
+/******发现******/
+/*排行榜*/
+.find-ranking{
+	padding:0 15px 15px 15px;
+	font-size:12px;
+	background:url(../images/find_ranking_bg.gif) no-repeat center;
+	background-size:100% 100%;
+}
+.find-ranking-title{
+	background:url(../images/find_ranking_title.png) no-repeat center;
+	background-size:194px 27px;
+	width:100%;
+	height:48px;
+}
+.find-ranking-list{
+	border-radius:6px;
+	background:#fff;
+	text-align:center;
+	padding:0 15px;
+}
+.find-ranking-list-title{
+	height:32px;
+	line-height:32px;
+	color:#999;
+}
+.find-ranking-list-info{
+	height:32px;
+	line-height:32px;
+	color:#333;
+	border-top:1px solid #eee;
+}
+.find-ranking-number{
+	display:inline-block;
+	float:left;
+	width:20%;
+	height:32px;
+}
+.find-ranking-name{
+	display:inline-block;
+	float:left;
+	width:35%;
+	height:32px;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.find-ranking-Profit{
+	display:inline-block;
+	float:left;
+	width:45%;
+	height:32px;
+}
+/******平仓******/
+.mui-input-row-left{
+	display:inline-block;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	float: left;
+	width:35%;
+	color:#999;
+}
+.mui-input-row-right{
+	display:inline-block;
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	float: left;
+}
+.mui-input-row .mui-input-row-left{
+	line-height: 1.1;
+	padding: 14px 15px;
+}
+.mui-input-row .mui-input-row-right{
+	line-height: 1.1;
+	padding: 14px 15px 14px 0;
+}
+.mui-collapse-content{
+	width: auto;
+	height: auto;
+	margin: -12px 0;
+}
+.mui-input-row input.input-phone-code{
+	width:35%;
+}
+.mui-input-row .phone-code-btn{
+	width:30%;
+}
+/******登录******/
+/*背景*/
+.login-bg{
+	background:#fff;
+	position:relative;
+}
+.login-logo{
+	width:100%;
+}
+.login-logo img{
+	width:100%;
+}
+/*输入框*/
+.login-form{
+	margin-top:15%;
+}
+.login-form-list{
+	width:100%;
+	padding:0 40px;
+	position:relative;
+}
+.login-form-list input.login-input{
+	border-top:#fff;
+	border-left:#fff;
+	border-right:#fff;
+	padding:10px 15px 10px 45px;
+	font-size:16px;
+}
+.login-form-list .icon-login-name{
+	position:absolute;
+	left:40px;
+	top:10px;
+	font-size:24px;
+	color:#999;
+}
+.login-form-list .icon-my-Password{
+	position:absolute;
+	left:40px;
+	top:10px;
+	font-size:24px;
+	color:#999;
+}
+.login-form-list .mui-icon-eye{
+	right:40px !important;
+}
+.login-form .mui-input-row .mui-input-clear~.mui-icon-clear{
+	right:40px !important;
+}
+.login-form-list .mui-btn-block{
+	padding:10px;
+	font-size:16px;
+}
+/*密码找回*/
+.login-Password-Back{
+	position:absolute;
+	top:110%;
+	width:100%;
+	text-align:center;
+}
+@media screen and (max-width:360px){
+.login-Password-Back{
+	top:105%;
+}
+}
+@media screen and (min-width: 378px) and (max-width: 639px){
+.login-Password-Back{
+	top:115%;
+}
+}
+.login-Password-Back a{
+	color:#477bf3;
+}
+/******买入******/
+/*产品信息*/
+.product-buy-top{
+	background:#2f374a;
+	width:100%;
+	height:78px;
+	padding:0 20px;
+}
+.product-buy-top-product{
+	font-size:18px;
+	color:#fff;
+	float:left;
+	line-height:78px;
+}
+.product-buy-top-product span{
+	font-size:14px;
+}
+.product-buy-up-type{
+	border:1px solid #ff5656;
+	float:right;
+	padding:0 10px;
+	margin-top:26px;
+}
+
+.product-buy-down-type{
+	border:1px solid #32af58;
+	float:right;
+	padding:0 10px;
+	margin-top:26px;
+}
+
+.product-buy-up-type .icon-up , .product-buy-up-type .product-up-number-info{
+	color:#ff5656;
+}
+
+.product-buy-down-type .icon-down , .product-buy-down-type .product-down-number-info{
+	color:#32af58;
+}
+
+/*数额选择*/
+ul.buy-number{
+	list-style: none;
+	display:block;
+	width: 100%;
+	padding:10px;
+	margin: 0;
+	overflow: hidden;
+}
+ul.buy-number li{
+	display:block;
+	float:left;
+	padding:10px;
+}
+@media screen and (max-width:360px){
+ul.buy-number{
+	padding:5px;
+}
+ul.buy-number li{
+	padding:5px;
+}
+}
+.buy-number-info{
+	display:block;
+	width: 100%;
+	height: 36px;
+	line-height:36px;
+	background-color: #fff;
+	text-align: center;
+	border:1px solid #fff;
+	border-radius:3px;
+}
+input.input-buy-number{
+	height: 36px;
+	padding: 5px 0;
+	text-align: center;
+	margin:0;
+	border-color: #fff;
+}
+ul.product-buy-number li{
+	width: 25%;
+}
+ul.product-buy-number li.buy-number-li-input{
+	width: 50%;
+}
+ul.buy-number li.on .buy-number-info , ul.buy-number li.on input.input-buy-number{
+	border-color: #477bf3;
+	color:#477bf3;
+}
+input.input-buy-number::-webkit-input-placeholder{
+	color:#000;
+}
+/******充值******/
+.money-add-top{
+	background:#2f374a;
+	width:100%;
+	height:104px;
+	padding:23px 20px;
+	color:#c2d4ff;
+	line-height:32px;
+}
+.money-add-top-title{
+	float:left;
+	font-size:12px;
+}
+.money-add-top-info{
+	float:left;
+	color:#fff;
+	font-size:16px;
+}
+.money-add-top-info span{
+	font-size:12px;
+	margin-left:10px;
+}
+.money-add-top-box{
+	overflow:hidden;
+}
+/******公告******/
+.notice-list{
+	padding:12px;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.notice-list-time{
+	float:right;
+	color:#999;
+	padding-left:20px 40px;
+}
+/******文章页******/
+.article-bg{
+	background:#fff;
+}
+.article-title{
+	padding:20px;
+	background:url(../images/article_title_bg.png) no-repeat center bottom;
+	background-size:100% auto;
+	text-align:center;
+	color:#fff;
+}
+.article-title h2{
+	font-size:18px;
+	line-height:32px;
+	color:#fff;
+	font-weight:400;
+}
+.article-info{
+	margin-top:10px;
+}
+.article-time{
+	padding:0 5px;
+}
+.article-author{
+	padding:0 5px;
+}
+.article-content{
+	padding:15px;
+	color:#333;
+	margin-top:5px;
+}
+.article-content p{
+	color:#333;
+}
+/******提现列表******/
+.Withdrawals-wait .Position-list-time , .Withdrawals-wait .Position-list-id , .Withdrawals-yes .Position-list-time , .Withdrawals-yes .Position-list-id , .Withdrawals-no .Position-list-time , .Withdrawals-no .Position-list-id{
+	color:#fff;
+}
+.Withdrawals-state{
+	float:right;
+}
+.Withdrawals-state .iconfont{
+	font-size:16px;
+}
+.Withdrawals-state .icon-list-wait{
+	font-size:20px;
+}
+.Withdrawals-state span{
+	display:inline-block;
+	line-height: 48px;
+	margin:0 3px;
+	float:left;
+}
+.Withdrawals-number{
+	color:#999;
+}
+/*拒绝*/
+.Withdrawals-no .Position-list-title{
+	background:#ff3636;
+	border-bottom:none;
+}
+.Withdrawals-no .Withdrawals-state span{
+	color:#ff3636;
+}
+/*成功*/
+.Withdrawals-yes .Position-list-title{
+	background:#32af58;
+	border-bottom:none;
+}
+.Withdrawals-yes .Withdrawals-state span{
+	color:#32af58;
+}
+/*等待*/
+.Withdrawals-wait .Position-list-title{
+	background:#477bf3;
+	border-bottom:none;
+}
+.Withdrawals-wait .Withdrawals-state span{
+	color:#477bf3;
+}
+.Position-list-text{
+	padding:8px 15px;
+	border-top:1px solid #eee;
+}
+.Position-list-text span{
+	display:inline-block;
+	color:#999;
+}
+
+.Position-list-date{
+	border-top:1px solid #eee;
+	padding:3px 15px;
+	width: 100%;
+	text-align: right;
+}
+
+.Position-list-date span{
+	display:inline-block;
+	color:#999;
+}
+
+.trade-history-header{
+	top: 44px;
+	background-color:#2f374a;
+}
+.mui-bar .icon-right{
+	font-size:16px;
+	line-height:24px;
+	margin:0 10px;
+}
+.mui-bar .icon-left{
+	font-size:16px;
+	line-height:24px;
+	margin:0 10px;
+}
+/******在线客服******/
+.customer-button{
+	overflow:hidden;
+	text-align:center;
+	width:100%;
+}
+.customer-button .mui-btn{
+	width:140px;
+	display:inline-block;
+	height:36px;
+	line-height:36px;
+	padding:0;
+	margin:0;
+}
+.customer-time{
+	width:100%;
+	overflow:hidden;
+	line-height:14px;
+	font-size:12px;
+	text-align:center;
+	color:#999;
+	background-color: #efeff4;
+	padding: 10px;
+}
+/******提现金额******/
+.mui-input-row span.mui-input-row-right-span{
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	line-height: 1.1;
+	float: left;
+	padding:15px 0;
+}
+.mui-input-row span.mui-input-group-span{
+	padding:15px 0;
+	float:left;
+	line-height:1.1;
+}
+.mui-input-row-right-span{
+	position:absolute;
+	right:10px;
+	top:0;
+}
+.mui-input-row .mui-input-row-right-input{
+	padding-right:35px;
+}
+.withdrawals-explain{
+	position:relative;
+	padding:10px 10px 10px 35px;
+}
+.withdrawals-explain span{
+	position:absolute;
+	left:10px;
+	top:10px;
+	color:#999;
+	font-size:12px;
+	line-height:20px;
+}
+.withdrawals-explain p{
+	font-size:12px;
+	line-height:20px;
+}
+.mui-input-group-a{
+	line-height: 1.1;
+	float: left;
+	padding:15px 0;
+	color:#333;
+	width:65%;
+	display:inline-block;
+	margin-right:-30px;
+}
+.mui-input-row .icon-right{
+	font-size:12px;
+	color:#999;
+	position:absolute;
+	right:0;;
+	top:16px;
+}
+/******订单确认******/
+.money-add-top .index-my-money-title{
+	line-height:20px;
+}
+.money-add-top .index-my-money-number{
+	font-size:36px;
+	font-weight:400;
+	line-height:44px;
+}
+
+.help-nwe-icon{
+	display:inline-block;
+	background:#ff5656;
+	color:#fff;
+	font-size:12px;
+	line-height:16px;
+	padding:0 4px;
+	margin:4px 10px;
+	float:left;
+}
+/******订单确认******/
+.mui-input-group .money-add-label-img{
+	height:72px;
+}
+.money-add-label-img label{
+	overflow:hidden;
+	height:72px;
+}
+.money-add-label-img img{
+	float:left;
+	width:38px;
+	height:38px;
+	margin:2px 10px 0 0;
+}
+.money-add-label-title{
+	overflow:hidden;
+	float:left;
+}
+.money-add-label-title-name{
+	line-height:24px;
+	height:24px;
+}
+.money-add-label-title-info{
+	line-height:14px;
+	color:#999;
+}
+.money-add-label-img input[type=radio]{
+	top:22px;
+}
+/******收支明细******/
+.money-add-top-l{
+	float:left;
+	width:50%;
+	overflow:hidden;
+	text-align:center;
+	background:url(../images/Position_trade_number_icon.gif) no-repeat right center;
+	background-size:2px 46px;	
+}
+.money-add-top-r{
+	float:left;
+	width:50%;
+	overflow:hidden;
+	text-align:center;		
+}
+.money-add-top .Position-Profit-number-info-up , .money-add-top .Position-Profit-number-info-down{
+	font-size:18px;
+	line-height:24px;
+	height:24px;
+	float:left;
+}
+.money-list .money-list-time{
+	color:#999;
+	float:right;
+	font-size:12px;
+}
+.money-list-bottom{
+	color:#999;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	font-size:12px;
+}
+.money-list-bottom .product-up-number-info , .money-list-bottom .product-down-number-info{
+	float:right;
+	margin-left:10px;
+}
+/******交易******/
+.trade-price-begin{
+	color:#fff;
+	overflow:hidden;
+}
+.trade-price-begin .trade-price-begin-title{
+	display:inline-block;
+	width:100%;
+	height:16px;
+	line-height:16px;
+	font-size:12px;
+	float:left;
+	text-align:center;
+	margin-top:5px;
+}
+.trade-price-begin .trade-price-begin-number{
+	display:inline-block;
+	width:100%;
+	height:21px;
+	line-height:21px;
+	font-size:16px;
+	float:left;
+	text-align:center;
+}
+/*当前价格*/
+.trade-price{
+	padding:10px;
+	background:#fff;
+	overflow:hidden;
+	height:62px;
+	line-height:42px;
+	width:100%;
+	text-align:center;
+	font-size:26px;
+}
+.trade-price .trade-price-up{
+	color:#ff5656;
+}
+.trade-price .trade-price-down{
+	color:#32af58;
+}
+.trade-price-title{
+	float:left;
+	display:inline-block;
+	width:100%;
+	height:18px;
+	line-height:18px;
+	text-align:center;
+	color:#fff;
+	font-size:12px;
+}
+.trade-price-number{
+	float:left;
+	display:inline-block;
+	width:100%;
+	height:24px;
+	line-height:24px;
+	text-align:center;
+	font-size:14px;
+}
+.trade-price-lowest{
+	float:left;
+	width:90px;
+}
+.trade-price-lowest .trade-price-title{
+	background:#32af58;
+}
+.trade-price-lowest .trade-price-number{
+	color:#32af58;
+	border:1px solid #8cd9a3;
+	border-top:0px;
+}
+.trade-price-highest{
+	float:right;
+	width:90px;
+}
+.trade-price-highest .trade-price-title{
+	background:#ff5656;
+}
+.trade-price-highest .trade-price-number{
+	color:#ff5656;
+	border:1px solid #ffb1b1;
+	border-top:0px;
+}
+/*购买*/
+.trade-buy{
+	overflow:hidden;
+	padding:0 10px;
+}
+.trade-buy li{
+    overflow: hidden;
+    -webkit-touch-callout: none;
+	background:44px;
+	text-align:center;
+	padding:10px 0;
+	position:relative;
+	width:100%;
+	display:block;
+	float:left;
+}
+.trade-buy li.trade-buy-border-bottom{
+	border-bottom:1px solid #eee;
+}
+.trade-buy a.trade-buy-up{
+	display:inline-block;
+	width:90px;
+	height:32px;
+	line-height:32px;
+	text-align:center;
+	background:#ff3a3a;
+	color:#fff;
+	margin:0;
+	padding:0;
+	border-radius:3px;
+	position:absolute;
+	top:13px;
+	left:0;
+}
+.trade-buy a.trade-buy-up .icon-up{
+	color:#fff;
+	float:none;
+}
+.trade-buy a.trade-buy-up .trade-buy-button-info{
+}
+.trade-buy a.trade-buy-down{
+	display:inline-block;
+	width:90px;
+	height:32px;
+	line-height:32px;
+	text-align:center;
+	background:#32af58;
+	color:#fff;
+	float:right;
+	margin:0;
+	padding:0;
+	border-radius:3px;
+	position:absolute;
+	top:13px;
+	right:0;
+}
+.trade-buy a.trade-buy-down .icon-down{
+	color:#fff;
+	float:none;
+}
+.trade-buy a.trade-buy-down .trade-buy-button-info{
+}
+.trade-buy-number{
+	font-size:16px;
+	line-height:24px;
+	width:100%;
+	float:left;
+}
+.trade-buy-unit{
+	font-size:12px;
+	line-height:16px;
+}
+.trade-buy-explain{
+	font-size:12px;
+	color:#999;
+	line-height:14px;
+	width:100%;
+	float:left;
+}
+.mui-bar .mui-title .mui-icon-arrowdown{
+	font-size:18px;
+	margin-left:5px;
+}
+.mui-control-item .mui-icon-arrowdown{
+	font-size:18px;
+	margin-left:-5px;
+}
+
+select.select-none{
+	background:rgba(0,0,0,0);
+	margin:0;
+	padding:0;
+	width:auto;
+}
+/*交易-产品选择-下拉*/
+ul.trade-product-list{
+	list-style:none;
+	display:block;
+	width:100%;
+	position:fixed;
+	top:44px;
+	left:0;
+	overflow:hidden;
+	margin:0;
+	padding:0;
+}
+ul.trade-product-list li{
+	display:block;
+	float:left;
+	width:100%;
+	text-align:center;
+	background:#fff;
+	font-size:16px;
+}
+ul.trade-product-list li a{
+	font-size:16px;
+	color:#333;
+	background:#fff;
+	display:block;
+	float:left;
+	width:100%;
+	text-align:center;
+	height:44px;
+	line-height:44px;
+	border-bottom:1px solid #eee;
+}
+
+.on .mui-icon-arrowdown{ -webkit-transform:rotateX(180deg); }
+
+
+/*tab*/
+.tabT1{
+	font-size: 15px;
+	font-weight: 400;
+	position: relative;
+	display: table;
+	overflow: hidden;
+	width: 100%;
+	table-layout: fixed;
+	border: 1px solid #477bf3;
+	border-radius: 3px;
+	background-color: transparent;
+	-webkit-touch-callout: none;
+	display: -webkit-box;
+}
+.tabT1>*{
+	display: block;
+	line-height: 38px;
+	overflow: hidden;
+	width:100% !important;
+	-webkit-box-flex:1;
+	-webkit-transition:background-color .1s linear;
+	transition: background-color .1s linear;
+	text-align: center;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #477bf3;
+	border-color: #477bf3;
+	border-left: 1px solid #477bf3 !important;
+}
+.tabT1>*:first-child {
+	border-left-width: 0 !important;
+}
+.tabT1>*:last-child {
+	border-radius: 0
+}
+.tabT1>*.on,.tabT1>*.on {
+	color: #fff;
+	background-color: #477bf3;
+}
+
+.spSelect{ text-align: left;}
+	.spSelect select{ width:100%; height:38px; padding-left:.5rem; }
+	.spSelect:before{
+		position:absolute; right:1.0rem; top:.7rem;
+		content: '\e581';
+		pointer-events: none;
+		display: inline-block;
+		width:10px; height:10px;
+		font-family: Muiicons;
+		font-size: 18px;
+		font-weight: 400;
+		font-style: normal;
+		line-height: 1;
+		display: inline-block;
+		text-decoration: none;
+		-webkit-font-smoothing: antialiased
+	}

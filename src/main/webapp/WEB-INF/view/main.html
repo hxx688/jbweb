@@ -1,0 +1,192 @@
+@layout("/common/_container.html"){
+
+		<div class="row" style="padding:10px 16px 10px 16px;">
+				<div class="col-xs-12">														
+					<div style="margin-top: 35px;">
+						<strong>代理商总数</strong><br>
+						<div style="width: 100%;padding-top: 5px;">
+							<div style="width: 33%;float: left;padding-top: 5px;">
+								${agent_count}
+							</div>							
+						</div>
+					</div>
+					
+					<div style="margin-top: 35px;">
+						<strong>会员总数</strong><br>
+						<div style="width: 100%;padding-top: 5px;">
+							<div style="width: 33%;float: left;padding-top: 5px;">
+								${member_count}
+							</div>							
+						</div>
+					</div>
+					
+					<div style="margin-top: 35px;">
+						<strong>昨日天新增会员</strong><br>
+						<div style="width: 100%;padding-top: 5px;">
+							<div style="width: 33%;float: left;padding-top: 5px;">
+								${today_count}
+							</div>
+						</div>
+					</div>
+					
+					<div style="margin-top: 35px;">
+						<strong>昨日提现总量</strong><br>
+						<div style="width: 100%;padding-top: 5px;">
+							<div style="width: 33%;float: left;padding-top: 5px;">
+								${tixin_count}
+							</div>							
+						</div>
+					</div>
+				
+					<div style="margin-top: 35px;">
+						<strong>昨日交易总量</strong><br>
+						<div style="width: 100%;padding-top: 5px;">
+							<div style="width: 33%;float: left;padding-top: 5px;">
+							${order_count}
+							</div>						
+						</div>
+					</div>
+					@ if(user.is_agent!=1){
+						<div style="margin-top: 35px;">
+							<strong>昨日收入前十名</strong><br>
+							<div style="width: 100%;padding-top: 5px;">
+								@ for(order in toporders){							
+									<div style="width: 33%;float: left;padding-top: 5px;">
+										<span>${order.person_name}</span>
+										<span>${order.earn}</span>
+									</div>
+								@}							
+							</div>
+						</div>
+						<div style="margin-top: 35px;">
+							<strong>昨日支出前十名</strong><br>
+							<div style="width: 100%;padding-top: 5px;">
+								@ for(order in bottomorders){							
+									<div style="width: 33%;float: left;padding-top: 5px;">
+										<span>${order.person_name}</span>
+										<span>${order.earn}</span>
+									</div>
+								@}		
+							</div>
+						</div>
+					@}	
+					<div style="margin-top: 35px;">
+						<strong>站点信息</strong><br>
+						<div style="width: 100%;padding-top: 5px;">
+							<div style="width: 33%;float: left;padding-top: 5px;">
+								站点名称：${main.site_name!}
+							</div>
+							<div style="width: 33%;float: left;padding-top: 5px;">
+								公司名称：${main.site_name!}
+							</div>
+							<div style="width: 33%;float: left;padding-top: 5px;">
+								系统版本：V1.0.0
+							</div>
+						</div>						
+					</div>
+					
+					<div style="margin-top: 35px;">
+						
+					</div>
+				
+				</div>
+				
+
+	  </div>
+	  
+@}	
+
+
+<script>
+	$(function(){
+		$("#div_1").hide();
+		var code = "${code}";
+		$.post(BladeApp.ctxPath + "/cache/getBtn", { code: code }, function (data) {
+	        if (data.code === 0) {
+	            btnjsons = data.data;
+	            if(btnjsons.length > 0){
+	            	$("#div_1").show();
+	            	$("#div_2").css("margin-top","35px");
+	            	$.post(BladeApp.ctxPath + "/main/getYingyee", { code: code }, function (data) {
+	            		$("#fontSix").html(data.data.sixNowCount);
+		            	$("#fontTwelve").html(data.data.twelveNowCount);
+		            	$("#fontTwentyFour").html(data.data.twentyFourNowCount);
+	            	}, "json");
+	            }
+	        }
+	    }, "json");
+		
+	});
+	
+	function doJili(obj){
+		layer.confirm('确定要执行该激励吗？', {
+            icon: 3,
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+			$("#six").attr("disabled","disabled");
+			$("#twelve").attr("disabled","disabled");
+			$("#twentyFour").attr("disabled","disabled");
+			var appindex = appLoading();
+			var ajax = new $ax("${ctxPath}/main/"+obj, function(data){
+				if (data.code === 0) {
+					clearLoading(appindex);
+					layer.msg(data.message, {shift: 1});
+					$("#six").removeAttr("disabled","disabled");
+					$("#twelve").removeAttr("disabled","disabled");
+					$("#twentyFour").removeAttr("disabled","disabled");
+					return false;
+				} else {
+					clearLoading(appindex);
+					$("#six").removeAttr("disabled","disabled");
+					$("#twelve").removeAttr("disabled","disabled");
+					$("#twentyFour").removeAttr("disabled","disabled");
+					if(data.code===999){
+						layer.alert(data.message, {icon: 2,title:"发生错误"});
+					}
+					else{
+						layer.msg(data.message, {shift: 6,time:2000});
+					}
+					return false;
+				}
+			});
+			ajax.start();
+		}, function () {
+	        //layer.msg('已取消');
+	    });
+		
+		
+	}
+	
+	function doReward(){
+		layer.confirm('确定要执行激励吗？', {
+            icon: 3,
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+        	$("#doReward").attr("disabled","disabled");
+        	var appindex = appLoading();
+			var ajax = new $ax("${ctxPath}/main/runReward", function(data){
+				if (data.code === 0) {
+					clearLoading(appindex);
+					layer.msg(data.message, {shift: 1});
+					$("#doReward").removeAttr("disabled","disabled");
+					return false;
+				} else {
+					clearLoading(appindex);
+					$("#doReward").removeAttr("disabled","disabled");
+					if(data.code===999){
+						layer.alert(data.message, {icon: 2,title:"发生错误"});
+					}
+					else{
+						layer.msg(data.message, {shift: 6,time:2000});
+					}
+					return false;
+				}
+			});
+			ajax.start();
+        	
+        }, function () {
+	        //layer.msg('已取消');
+	    });
+		
+	}
+</script>
