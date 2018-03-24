@@ -1,4 +1,4 @@
-#Spring-Blade java开发平台
+
 ## 平台简介
 Spring-Blade是基于多个优秀的开源项目，高度整合封装而成的快速开发平台。
 PS:因为喜欢刀锋战士所以取名了SpringBlade，当中有一个类也命名为Blade。
