@@ -1,18 +1,19 @@
-package com.lfgj.clinet.payHqf;
+package com.lfgj.clinet.payLida;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.lfgj.clinet.payFactory.IPayService;
+import javax.security.auth.login.Configuration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lfgj.clinet.pay.payment.PayInfo;
+import com.lfgj.clinet.payFactory.IPayService;
 import com.lfgj.clinet.payHqf.exception.PayException;
 import com.lfgj.clinet.payHqf.util.ConstantHqf;
 import com.lfgj.clinet.payHqf.util.ShanPayUtil;
-import com.lfgj.clinet.paySZ.util.ConstantSZ;
 import com.lfgj.member.model.Member;
 import com.lfgj.member.service.MemberService;
 import com.lfgj.util.LfConstant;
@@ -24,14 +25,14 @@ import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
 
 /**
- * 支付通道：环球付
+ * 支付通道：立达付
  * @author Administrator
  *
  */
 
 @Service
-@Client(name = "lf_prepay_hqf")
-public class PrePayHqfClient extends RequestMethod implements IPayService{
+@Client(name = "lf_prepay_lida")
+public class PrePayLidaClient extends RequestMethod implements IPayService{
 	@Autowired
 	MemberService service;
 	
@@ -84,10 +85,9 @@ public class PrePayHqfClient extends RequestMethod implements IPayService{
     public ResultVo getPayUrl(String money, String orderNo, String... extendStrs){
 		ResultVo rv = new ResultVo();
 		try{
-			Map<String,Object> requestParams = getParameter(money, orderNo);
-			String signMd5 = ShanPayUtil.buildRequestParaShan(requestParams, ConstantHqf.KEY);
-			requestParams.put("sign", signMd5);
-			requestParams.put("pay_url", ConstantHqf.GATEWAY_NEW);
+			Map<String,Object> requestParams = getParameter(money, orderNo, extendStrs);
+            String payUrl = ConstConfig.pool.get("pay.lida.url") + "/GateWay/ReceiveBank.aspx";
+			requestParams.put("pay_url", payUrl);
 			String domain = ConstConfig.pool.get("config.domain");
 			int i = domain.indexOf("//");
 			if(i >= 0){
@@ -96,7 +96,7 @@ public class PrePayHqfClient extends RequestMethod implements IPayService{
 			requestParams.put("http_referer", domain); // 这个域名，要和支付通道后台绑定的域名一样，不加http://
 	        rv.setReturnCode("0");
 			rv.setReturnParams(requestParams);
-			System.out.println("环球付请求参数："+requestParams);
+			System.out.println("立达付请求参数："+requestParams);
 			return rv;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -106,37 +106,35 @@ public class PrePayHqfClient extends RequestMethod implements IPayService{
 		return rv;
 	}
 	
-	private Map<String,Object> getParameter(String money, String orderNo) throws PayException{
-		
-		/**************************请求参数**************************/
-		 //商户订单号
-		String out_order_no = orderNo;
-		//订单名称
-		String subject = "购买";
-		//付款金额
-		String total_fee = money;
-		//订单描述
-		String body = "";
-		if(out_order_no==null||subject==null||total_fee==null){
-			throw new PayException("必要参数不能为空!");
+	private Map<String,Object> getParameter(String money, String orderNo, String... extendStrs) throws PayException{
+
+		String keyValue = ConstConfig.pool.get("pay.lida.secret"); // 商家密钥
+		// 商家设置用户购买商品的支付信息
+		String p0_Cmd = "Buy"; // 在线支付请求，固定值 ”Buy”
+		String p1_MerId = ConstConfig.pool.get("pay.lida.key"); // 商户编号
+		String p2_Order = orderNo; // 商户订单号
+		String p3_Amt = money; // 支付金额
+		String p4_Cur = "CNY"; // 交易币种
+		String p5_Pid = "productname"; // 商品名称
+		String p6_Pcat = "producttype"; // 商品种类
+		String p7_Pdesc = "productdesc"; // 商品描述
+		String p8_Url = ConstConfig.pool.get("config.domain")
+						+ "/payfront/notifyLdf"; // 商户接收支付成功数据的地址
+		String p9_SAF = "0"; // 需要填写送货信息 0：不需要  1:需要
+		String pa_MP = "6252"; // 商户扩展信息
+		String pd_FrpId = "wxcode";
+		if (extendStrs != null && extendStrs.length > 0) {
+			pd_FrpId = extendStrs[0];
 		}
-		//服务器异步通知页面路径
-		String domain = ConstConfig.pool.get("config.domain");
-		String return_url = domain + ConstantHqf.RETURN_URL;
-		String notify_url = domain + ConstantHqf.NOTIFY_URL;
-		
-		if("".equals(notify_url)){
-			throw new PayException("notify_url不能为空!");
-		}
-       //需http://格式的完整路径，不能加?id=123这类自定义参数
-       //页面跳转同步通知页面路径
-		if("".equals(return_url)){
-			throw new PayException("return_url不能为空!");
-		}
-		if("".equals(ConstantHqf.USER_SELLER)){
-			throw new PayException("商户号不能为空!");
-		}
-		Map<String,Object> parameter = new HashMap<String,Object>(); 
+		String pr_NeedResponse = "1"; // 默认为"1"，需要应答机制
+
+		// 获得MD5-HMAC签名
+		String hmac = PaymentForOnlineService.getReqMd5HmacForOnlinePayment(
+			p0_Cmd, p1_MerId, p2_Order, p3_Amt, p4_Cur, p5_Pid, p6_Pcat,
+			p7_Pdesc, p8_Url, p9_SAF, pa_MP, pd_FrpId, pr_NeedResponse,
+			keyValue);
+
+		Map<String,Object> parameter = new HashMap<String,Object>();
 //		parameter.put("body", body);
 		parameter.put("notify_url", notify_url);
 		parameter.put("out_order_no", out_order_no);
@@ -145,6 +143,7 @@ public class PrePayHqfClient extends RequestMethod implements IPayService{
 		parameter.put("subject", subject);
 		parameter.put("total_fee", total_fee);
 		parameter.put("user_seller", ConstantHqf.USER_SELLER);
+
 		return parameter;
 	}
 	

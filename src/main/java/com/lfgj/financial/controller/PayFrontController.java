@@ -107,6 +107,39 @@ public class PayFrontController extends BaseController {
 		mm.put("result_info", result);
 		return BASE_PATH + "notify_url.html";
 	}
+
+    /**
+     * 立达付
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyLdf")
+    public String notifyLdf(ModelMap mm) throws UnsupportedEncodingException, PayException{
+        System.out.println("通道（立达付）支付异步通知:"+this.getParas());
+
+        boolean shanNotify = md5VerifyShan(this.getRequest());
+        String result = "fail";
+        if(shanNotify){
+            if("TRADE_SUCCESS".equals(this.getParameter("trade_status"))){
+                //商户订单号
+                String out_order_no = this.getParameter("out_order_no","");
+                //环球汇交易号
+                String trade_no = this.getParameter("trade_no","");
+                //价格
+                String total_fee = this.getParameter("total_fee","");
+
+                boolean b = memberService.updatePayInfo(out_order_no, trade_no, total_fee, false);
+                if(b){
+                    result = "ok";
+                }
+            }
+        }
+
+        mm.put("result_info", result);
+        return BASE_PATH + "notify_url.html";
+    }
 	
 	/**
 	 * 环球付验签方法

@@ -41,4 +41,6 @@ public class ConstantHqf {
 	 * 支付地址，必须外网可以正常访问
 	 */
 	public final static String  GATEWAY_NEW = "http://www.globalspay.com/PayOrder/payorder";
+
+
 }

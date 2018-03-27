@@ -93,7 +93,8 @@ public class PaymentController extends BaseController {
 		mm.put("person", person);
 		return BASE_PATH + "pay.html";
 	}
-	
+
+
 	@RequestMapping("/toPay")
 	public String toPay(ModelMap mm) throws Exception {
 		String person_id = getParameter("person_id");
@@ -108,8 +109,9 @@ public class PaymentController extends BaseController {
 		
 		person_id = AESKit.decrypt(person_id);
 		Member person = Blade.create(Member.class).findById(person_id);
-		
-		String pay_type = "7"; // 环球付
+
+
+		String pay_type = payWay; // 环球付
 		String money = getParameter("total_fee");
 		
 		if(Float.valueOf(money) <= 0){
