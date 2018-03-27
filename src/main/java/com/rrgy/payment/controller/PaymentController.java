@@ -97,6 +97,7 @@ public class PaymentController extends BaseController {
 	@RequestMapping("/toPay")
 	public String toPay(ModelMap mm) throws Exception {
 		String person_id = getParameter("person_id");
+        String payWay = getParameter("payWay");
 
 		if (StrKit.isEmpty(person_id)) {
 			LogKit.info("=============没有找到商户号,请确认付款码是否有误===============");

@@ -70,17 +70,29 @@
 				</div>
 				<div class="weui-cells__title">支付方式</div>
 				<div class="weui-cells weui-cells_radio">
-					<label class="weui-cell weui-check__label" for="payWay2">
-	
+                    <label class="weui-cell weui-check__label" for="payWay1">
+
+                        <div class="weui-cell__bd">
+                            <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                                 style="width: 30px; margin-right: 5px; vertical-align: middle;">代付
+                        </div>
+                        <div class="weui-cell__ft">
+                            <input type="radio" name="payWay" class="weui-check" id="payWay1" value="0" checked="checked" />
+                            <span class="weui-icon-checked"></span>
+                        </div>
+                    </label>
+
+                    <label class="weui-cell weui-check__label" for="payWay2">
 						<div class="weui-cell__bd">
 							<img src="${ctxPath}/static/style/images/shanpay.png" alt=""
 								style="width: 30px; margin-right: 5px; vertical-align: middle;">环球付
 						</div>
 						<div class="weui-cell__ft">
-							<input type="radio" name="payWay" class="weui-check" id="payWay3" value="0" checked="checked"/> 
+							<input type="radio" name="payWay" class="weui-check" id="payWay2" value="1" checked="checked" />
 							<span class="weui-icon-checked"></span>
 						</div>
-					</label> 
+					</label>
+
 				</div>
 				<div class="bd">
 					<div class="weui-btn-area">
@@ -94,7 +106,7 @@
 <script type="text/javascript">
 		
 	function toPay(){
-		var payWay = $("input[name='payWay']:checked").val();	
+		var payWay = $("input[name='payWay']:checked").val();
 		var remark = $("#remark").val();
 		var total_fee = $.trim($("#money1").val());
 		if(total_fee == ""){
