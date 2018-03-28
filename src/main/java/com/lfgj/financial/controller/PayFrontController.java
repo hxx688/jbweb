@@ -157,8 +157,7 @@ public class PayFrontController extends BaseController {
                 if (r1_Code.equals("1")) {
                     // 产品通用接口支付成功返回-浏览器重定向
                     if (r9_BType.equals("1")) {
-                        out.println("callback方式:产品通用接口支付成功返回-浏览器重定向");
-                        result = "支付成功!";
+                        result = "支付结果: 支付成功!";
                         boolean b = memberService.updatePayInfo(out_order_no, trade_no, total_fee, false);
                         // 产品通用接口支付成功返回-服务器点对点通讯
                     } else if (r9_BType.equals("2")) {
@@ -168,7 +167,6 @@ public class PayFrontController extends BaseController {
                         return null;
                         // 产品通用接口支付成功返回-电话支付返回
                     }
-
                 }
             } else {
                 result = "交易签名被篡改!";
