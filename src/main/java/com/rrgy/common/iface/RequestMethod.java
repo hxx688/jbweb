@@ -2,8 +2,13 @@ package com.rrgy.common.iface;
 
 import java.lang.reflect.Method;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public abstract class RequestMethod extends RequestAbs{
-	
+
+    protected Logger log = LogManager.getLogger(this.getClass());
+
 	@Override
 	public ResultVo getResult() {
 		ResultVo rv = new ResultVo();

@@ -26,7 +26,7 @@
 <body>
 	<form name="payForm" action="${ctxPath}/payment/toPay" method="post">
 		<input type="hidden" name="person_id" value="${person.crypt_id!}"/>
-		<input type="hidden" name="payWay" value=""/>
+		<input type="hidden" name="payWay" id="payWay" value=""/>
 		<div class="page" style="padding-left:30%;padding-right:30%;">
 				<header class='demos-header'>
 					<h1 class="demos-title"></h1>
@@ -88,7 +88,7 @@
 								style="width: 30px; margin-right: 5px; vertical-align: middle;">环球付
 						</div>
 						<div class="weui-cell__ft">
-							<input type="radio" name="payWay" class="weui-check" id="payWay2" value="7" checked="checked" />
+							<input type="radio" name="payWay" class="weui-check" id="payWay2" value="7" />
 							<span class="weui-icon-checked"></span>
 						</div>
 					</label>
@@ -107,6 +107,7 @@
 		
 	function toPay(){
 		var payWay = $("input[name='payWay']:checked").val();
+		$("#payWay").val(payWay);
 		var remark = $("#remark").val();
 		var total_fee = $.trim($("#money1").val());
 		if(total_fee == ""){

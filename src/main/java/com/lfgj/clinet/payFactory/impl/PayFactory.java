@@ -25,7 +25,7 @@ public class PayFactory implements IPayFactory {
 
 
     @Override
-    public IPayService generatePayService(String payType){
+    public IPayService generatePayService(String payType) throws Exception{
 //        put("0", "银联快捷支付");
 //        put("1", "银联在线支付");
 //        put("5", "银联网关支付");
@@ -36,8 +36,9 @@ public class PayFactory implements IPayFactory {
             return prePayHqfClient;
         }else if("8".equals(payType)){
             return prePayLidaClient;
+        }else {
+            throw new Exception("支付渠道不存在!");
         }
-        return null;
     }
 
 

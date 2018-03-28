@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.lfgj.clinet.payFactory.IPayFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -44,6 +45,9 @@ public class PaymentController extends BaseController {
 	MemberService service;
 	@Autowired
 	PayInfoService payInfoService;
+
+    @Autowired
+	private IPayFactory payFactory;
 
 	@RequestMapping("")
 	public String index(ModelMap mm) {
@@ -98,7 +102,8 @@ public class PaymentController extends BaseController {
 	@RequestMapping("/toPay")
 	public String toPay(ModelMap mm) throws Exception {
 		String person_id = getParameter("person_id");
-        String payWay = getParameter("payWay");
+        String payType = getParameter("payWay");
+        String payModel = getParameter("payModel");
 
 		if (StrKit.isEmpty(person_id)) {
 			LogKit.info("=============没有找到商户号,请确认付款码是否有误===============");
@@ -111,7 +116,6 @@ public class PaymentController extends BaseController {
 		Member person = Blade.create(Member.class).findById(person_id);
 
 
-		String pay_type = payWay; // 环球付
 		String money = getParameter("total_fee");
 		
 		if(Float.valueOf(money) <= 0){
@@ -130,8 +134,8 @@ public class PaymentController extends BaseController {
 		payInfo.setReal_name(person.getReal_name());
 		payInfo.setMobile(person.getMobile());
 		payInfo.setPay_acount(person.getBank_acount());
-		payInfo.setPay_type(pay_type);
-		payInfo.setPay_type_name(LfConstant.PAY_TYPE.get(pay_type));
+		payInfo.setPay_type(payType);
+		payInfo.setPay_type_name(LfConstant.PAY_TYPE.get(payType));
 		payInfo.setRespcode("0"); // 未提交
 		payInfo.setRespname(LfConstant.PAY_RESPCODE.get("0"));
 		
@@ -142,8 +146,9 @@ public class PaymentController extends BaseController {
 			return BASE_PATH + "pay.html";
 		}
 		PrePayHqfClient pp = new PrePayHqfClient();
-		ResultVo payRs = pp.getPayUrl(money, orderNo);
-		
+
+        ResultVo payRs = payFactory.generatePayService(payType).getPayUrl(money, orderNo, payModel);
+
 		if("0".equals(payRs.getReturnCode())){
 			mm.put("code", 0);
 			Map<String,Object> data = (Map<String,Object>)payRs.getReturnParams();

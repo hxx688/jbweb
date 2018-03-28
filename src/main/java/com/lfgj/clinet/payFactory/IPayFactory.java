@@ -16,6 +16,6 @@ import com.rrgy.common.iface.ResultVo;
  */
 public interface IPayFactory {
 
-    public IPayService generatePayService(String payType);
+    public IPayService generatePayService(String payType) throws Exception;
 
 }

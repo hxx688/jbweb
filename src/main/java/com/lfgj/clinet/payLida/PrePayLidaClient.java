@@ -33,14 +33,16 @@ import com.rrgy.core.toolbox.Func;
 @Service
 @Client(name = "lf_prepay_lida")
 public class PrePayLidaClient extends RequestMethod implements IPayService{
+
 	@Autowired
 	MemberService service;
 	
 	public ResultVo url() {
 		ResultVo rv = new ResultVo();
 		String person_id = getParams("id","");	
-		String pay_type = "6"; // 环球付
+		String pay_type = "8"; // 环球付
 		String money = getParams("money","0");
+        String payModel = getParams("payModel", "wxcode");
 		
 		Member person = Blade.create(Member.class).findById(person_id);
 		
@@ -78,7 +80,7 @@ public class PrePayLidaClient extends RequestMethod implements IPayService{
 			return rv;
 		}
 		
-		return getPayUrl(money, orderNo);
+		return getPayUrl(money, orderNo, payModel);
 	}
 	
 	@Override
@@ -88,15 +90,15 @@ public class PrePayLidaClient extends RequestMethod implements IPayService{
 			Map<String,Object> requestParams = getParameter(money, orderNo, extendStrs);
             String payUrl = ConstConfig.pool.get("pay.lida.url") + "/GateWay/ReceiveBank.aspx";
 			requestParams.put("pay_url", payUrl);
-			String domain = ConstConfig.pool.get("config.domain");
-			int i = domain.indexOf("//");
-			if(i >= 0){
-				domain = domain.substring(i+2, domain.length());
-			}
-			requestParams.put("http_referer", domain); // 这个域名，要和支付通道后台绑定的域名一样，不加http://
+//			String domain = ConstConfig.pool.get("config.domain");
+//			int i = domain.indexOf("//");
+//			if(i >= 0){
+//				domain = domain.substring(i+2, domain.length());
+//			}
+//			requestParams.put("http_referer", domain); // 这个域名，要和支付通道后台绑定的域名一样，不加http://
 	        rv.setReturnCode("0");
 			rv.setReturnParams(requestParams);
-			System.out.println("立达付请求参数："+requestParams);
+			log.info("立达支付请求参数："+requestParams);
 			return rv;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -108,8 +110,10 @@ public class PrePayLidaClient extends RequestMethod implements IPayService{
 	
 	private Map<String,Object> getParameter(String money, String orderNo, String... extendStrs) throws PayException{
 
+        Map<String,Object> parameter = new HashMap<String,Object>();
 		String keyValue = ConstConfig.pool.get("pay.lida.secret"); // 商家密钥
 		// 商家设置用户购买商品的支付信息
+
 		String p0_Cmd = "Buy"; // 在线支付请求，固定值 ”Buy”
 		String p1_MerId = ConstConfig.pool.get("pay.lida.key"); // 商户编号
 		String p2_Order = orderNo; // 商户订单号
@@ -124,7 +128,9 @@ public class PrePayLidaClient extends RequestMethod implements IPayService{
 		String pa_MP = "6252"; // 商户扩展信息
 		String pd_FrpId = "wxcode";
 		if (extendStrs != null && extendStrs.length > 0) {
-			pd_FrpId = extendStrs[0];
+		    if(null != extendStrs[0] && !"".equals(extendStrs[0].trim())) {
+                pd_FrpId = extendStrs[0];
+            }
 		}
 		String pr_NeedResponse = "1"; // 默认为"1"，需要应答机制
 
@@ -134,25 +140,25 @@ public class PrePayLidaClient extends RequestMethod implements IPayService{
 			p7_Pdesc, p8_Url, p9_SAF, pa_MP, pd_FrpId, pr_NeedResponse,
 			keyValue);
 
-		Map<String,Object> parameter = new HashMap<String,Object>();
-//		parameter.put("body", body);
-		parameter.put("notify_url", notify_url);
-		parameter.put("out_order_no", out_order_no);
-		parameter.put("partner", ConstantHqf.PARTNER);
-		parameter.put("return_url", return_url);
-		parameter.put("subject", subject);
-		parameter.put("total_fee", total_fee);
-		parameter.put("user_seller", ConstantHqf.USER_SELLER);
+
+        parameter.put("p0_Cmd", p0_Cmd);
+		parameter.put("p1_MerId", p1_MerId);
+		parameter.put("p2_Order", p2_Order);
+		parameter.put("p3_Amt", p3_Amt);
+		parameter.put("p4_Cur", p4_Cur);
+		parameter.put("p5_Pid", p5_Pid);
+        parameter.put("p6_Pcat", p6_Pcat);
+        parameter.put("p7_Pdesc", p7_Pdesc);
+        parameter.put("p8_Url", p8_Url);
+        parameter.put("p9_SAF", p9_SAF);
+        parameter.put("pa_MP", pa_MP);
+        parameter.put("pd_FrpId", pd_FrpId);
+        parameter.put("pr_NeedResponse", pr_NeedResponse);
+        parameter.put("hmac", hmac);
+
+
 
 		return parameter;
 	}
 	
-	public static void main(String[] args){
-		String domain = "http://www.baidu.com";
-		int i = domain.indexOf("//");
-		if(i >= 0){
-			domain = domain.substring(i+2, domain.length());
-		}
-		System.out.println(domain);
-	}
 }
