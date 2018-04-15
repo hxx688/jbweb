@@ -37,7 +37,7 @@ public class CommKit {
 		Product p = ProductListCacheUtil.init().get(code);
 		int week = DateKit.getWeek();
 		if(p==null){
-			System.out.println(code+":商品不存在");
+			System.out.println(Thread.currentThread().getName() + ", " + code+":商品不存在");
 			return false;
 		}
 		

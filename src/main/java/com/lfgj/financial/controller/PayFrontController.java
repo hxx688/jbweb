@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.security.auth.login.Configuration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +18,7 @@ import com.lfgj.clinet.payHqf.util.ConstantHqf;
 import com.lfgj.clinet.payHqf.util.Md5Util;
 import com.lfgj.clinet.payLida.PaymentForOnlineService;
 import com.lfgj.clinet.paySZ.util.SzPayUtil;
+import com.lfgj.clinet.payYida.Mobo360SignUtil;
 import com.lfgj.member.service.MemberService;
 import com.lfgj.util.CommKit;
 import com.rrgy.common.base.BaseController;
@@ -181,7 +181,70 @@ public class PayFrontController extends BaseController {
 
         return BASE_PATH + "notify_url.html";
     }
-	
+
+
+    /**
+     * 易达付
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyYdf")
+    public String notifyYdf(ModelMap mm, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+        log.info("通道（易达付）支付异步回调通知:"+this.getParas());
+
+        String result = "fail";
+        try {
+            PrintWriter out = response.getWriter();
+
+            String apiName = this.getParameter("apiName");
+            String notifyTime = this.getParameter("notifyTime");
+            String tradeAmt = this.getParameter("tradeAmt");
+            String merchNo = this.getParameter("merchNo");
+            String merchParam = this.getParameter("merchParam");
+            String orderNo = this.getParameter("orderNo");
+            String tradeDate = this.getParameter("tradeDate");
+            String accNo = this.getParameter("accNo");
+            String accDate = this.getParameter("accDate");
+            String orderStatus = this.getParameter("orderStatus");
+            String signMsg = this.getParameter("signMsg");
+
+            String srcMsg = String
+                    .format(
+                            "apiName=%s&notifyTime=%s&tradeAmt=%s&merchNo=%s&merchParam=%s&orderNo=%s&tradeDate=%s&accNo=%s&accDate=%s&orderStatus=%s",
+                            apiName, notifyTime, tradeAmt, merchNo,
+                            merchParam, orderNo, tradeDate, accNo, accDate,
+                            orderStatus);
+
+            // 验证签名
+            boolean verifyRst = Mobo360SignUtil.verifyData(signMsg, srcMsg);
+            if (verifyRst) {
+                //商户订单号
+                String out_order_no = orderNo;
+                //支付平台订单号
+                String trade_no = accNo;
+                //价格
+                String total_fee = tradeAmt;
+
+                        result = "支付结果: 支付成功!";
+                        boolean b = memberService.updatePayInfo(out_order_no, trade_no, total_fee, false);
+                        out.println("SUCCESS");
+                        return null;
+            } else {
+                result = "交易签名被篡改!";
+            }
+
+        }catch(Exception e) {
+            log.error(e.getMessage(), e);
+            throw new PayException("系统出现错误!");
+        }
+
+        mm.put("result_info", result);
+
+        return BASE_PATH + "notify_url.html";
+    }
+
 	/**
 	 * 环球付验签方法
 	 * @param request

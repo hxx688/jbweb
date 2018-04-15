@@ -23,6 +23,8 @@ public class PayFactory implements IPayFactory {
     @Autowired
     private IPayService prePayLidaClient;
 
+    @Autowired
+    private IPayService prePayYidaClient;
 
     @Override
     public IPayService generatePayService(String payType) throws Exception{
@@ -36,7 +38,9 @@ public class PayFactory implements IPayFactory {
             return prePayHqfClient;
         }else if("8".equals(payType)){
             return prePayLidaClient;
-        }else {
+        }else if("9".equals(payType)) {
+            return prePayYidaClient;
+        } else{
             throw new Exception("支付渠道不存在!");
         }
     }

@@ -137,6 +137,32 @@
                     <span class="weui-icon-checked"></span>
                 </div>
             </label>
+
+            <label class="weui-cell weui-check__label" for="payWay7">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">易达(网银)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay7" value="yida_bank" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+            <label class="weui-cell weui-check__label" for="payWay8">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">易达(快捷)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay8" value="yida_easy" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+
         </div>
         <div class="bd">
             <div class="weui-btn-area">
@@ -154,6 +180,11 @@
         $("#payModel").val(payWay);
         var remark = $("#remark").val();
         var total_fee = $.trim($("#money1").val());
+
+        if(payWay == "yida_bank" || payWay == "yida_easy" ) {
+            $("#payWay").val(9);
+        }
+
         if(total_fee == ""){
             layer.msg("金额不能为空",{
                 shift : 6
