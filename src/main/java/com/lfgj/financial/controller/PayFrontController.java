@@ -131,6 +131,7 @@ public class PayFrontController extends BaseController {
         try {
             PrintWriter out = response.getWriter();
 
+
             String status =this.getParameter("status");
             String partner		=this.getParameter("partner");
             String ordernumber		=this.getParameter("ordernumber");
@@ -141,9 +142,9 @@ public class PayFrontController extends BaseController {
             String sign			=this.getParameter("sign");
 
             String userkey = ConstConfig.pool.get("pay.shoujie.key"); // 商家密钥
-
-            String mysign=MD5Util
-                    .string2MD5("partner="+partner+"&status="+status+"&sdpayno="+sdpayno+"&ordernumber="+ordernumber+"&paymoney="+paymoney+"&paytype="+paytype+"&"+userkey);
+            String acceptParams = "partner="+partner+"&status="+status+"&sdpayno="+sdpayno+"&ordernumber="+ordernumber+"&paymoney="+paymoney+"&paytype="+paytype+"&"+userkey;
+            log.info("accept params => " + acceptParams);
+            String mysign = MD5Util.string2MD5(acceptParams);
 
 
             if (sign.equals(mysign)){

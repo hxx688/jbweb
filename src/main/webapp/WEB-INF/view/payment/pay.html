@@ -6,6 +6,7 @@
           content="width=device-width,initial-scale=1,user-scalable=0">
     <title>鸿宝财富</title>
     <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="${ctxPath}/static/lfgj/weui2.css">
     <link rel="stylesheet" href="${ctxPath}/static/style/css/pay.css">
     <script src="${ctxPath}/static/jquery/jquery-1.8.3.js" type="text/javascript"></script>
     <script src="${ctxPath}/static/layer/layer.js"></script>
@@ -72,78 +73,12 @@
         </div>
         <div class="weui-cells__title">支付方式</div>
         <div class="weui-cells weui-cells_radio">
-            <label class="weui-cell weui-check__label" for="payWay1">
-
-                <div class="weui-cell__bd">
-                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">微信扫码
-                </div>
-                <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay1" value="wxcode" checked="checked" />
-                    <span class="weui-icon-checked"></span>
-                </div>
-            </label>
-            <label class="weui-cell weui-check__label" for="payWay2">
-
-                <div class="weui-cell__bd">
-                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">QQ钱包扫码
-                </div>
-                <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay2" value="qqpay" />
-                    <span class="weui-icon-checked"></span>
-                </div>
-            </label>
-            <label class="weui-cell weui-check__label" for="payWay3">
-
-                <div class="weui-cell__bd">
-                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">网银充值（一）
-                </div>
-                <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay3" value="wxcode" />
-                    <span class="weui-icon-checked"></span>
-                </div>
-            </label>
-            <label class="weui-cell weui-check__label" for="payWay4">
-
-                <div class="weui-cell__bd">
-                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">网银充值（二）
-                </div>
-                <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay4" value="wxcode" />
-                    <span class="weui-icon-checked"></span>
-                </div>
-            </label>
-            <label class="weui-cell weui-check__label" for="payWay5">
-
-                <div class="weui-cell__bd">
-                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">快捷支付充值（一）
-                </div>
-                <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay5" value="wxcode" />
-                    <span class="weui-icon-checked"></span>
-                </div>
-            </label>
-            <label class="weui-cell weui-check__label" for="payWay6">
-
-                <div class="weui-cell__bd">
-                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">快捷支付充值（二）
-                </div>
-                <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay6" value="wxcode" />
-                    <span class="weui-icon-checked"></span>
-                </div>
-            </label>
 
             <label class="weui-cell weui-check__label" for="payWay7">
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">易达(网银)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道一(网银)
                 </div>
                 <div class="weui-cell__ft">
                     <input type="radio" name="payWay" class="weui-check" id="payWay7" value="yida_bank" />
@@ -155,7 +90,7 @@
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">易达(快捷)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道一(快捷)
                 </div>
                 <div class="weui-cell__ft">
                     <input type="radio" name="payWay" class="weui-check" id="payWay8" value="yida_easy" />
@@ -168,7 +103,7 @@
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">首捷支付(快捷)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道二(快捷)
                 </div>
                 <div class="weui-cell__ft">
                     <input type="radio" name="payWay" class="weui-check" id="payWay9" value="shoufu|kuaijie" />
@@ -180,14 +115,150 @@
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">首捷支付(网银)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道二(网银)
                 </div>
                 <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay10" value="shoufu|bank|ICBC" />
+                    <input type="radio" name="payWay" class="weui-check" id="payWay10" value="shoufu|bank" />
                     <span class="weui-icon-checked"></span>
                 </div>
+
+
             </label>
 
+            <div id="shoufu_banklist" style="display:none;">
+            <!-- test -->
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g1" value="ICBC" type="radio">
+                <label for="g1">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>工商银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g2" value="ABC" type="radio">
+                <label for="g2">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>农业银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g3" value="BOCSH" type="radio">
+                <label for="g3">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>中国银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g4" value="CCB" type="radio">
+                <label for="g4">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>建设银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g5" value="CMB" type="radio">
+                <label for="g5">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>招商银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g6" value="SPDB" type="radio">
+                <label for="g6">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>浦发银行</p></div>
+                </label>
+            </div>
+
+
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g7" value="GDB" type="radio">
+                <label for="g7">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>广发银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g8" value="BOCOM" type="radio">
+                <label for="g8">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>交通银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g9" value="PSBC" type="radio">
+                <label for="g9">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>邮政储蓄</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g10" value="CNCB" type="radio">
+                <label for="g10">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>中信银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g11" value="CMBC" type="radio">
+                <label for="g11">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>民生银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g12" value="CEB" type="radio">
+                <label for="g12">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>光大银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g13" value="HXB" type="radio">
+                <label for="g13">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>华夏银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g14" value="CIB" type="radio">
+                <label for="g14">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>兴业银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g15" value="BOS" type="radio">
+                <label for="g15">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>上海银行</p></div>
+                </label>
+            </div>
+
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g16" value="SRCB" type="radio">
+                <label for="g16">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>上海农商</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g17" value="PAB" type="radio">
+                <label for="g17">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>平安银行</p></div>
+                </label>
+            </div>
+            <div class="weui-form-li iblock">
+                <input class="weui-form-checkbox" name="f2" id="g18" value="BCCB" type="radio">
+                <label for="g18">
+                    <i class="weui-icon-radio"></i>
+                    <div class="weui-form-text"><p>北京银行</p></div>
+                </label>
+            </div>
+
+            </div>
+            <!-- end -->
 
         </div>
         <div class="bd">
@@ -200,6 +271,24 @@
 </body>
 
 <script type="text/javascript">
+
+    // ********* test ********
+
+
+    // ********* test end  ********
+
+    $(function(){
+
+        $(".weui-check").change(
+            function() {
+                var id = $("input[name='payWay']:checked").val();
+                if (id == "shoufu|bank") {
+                    $("#shoufu_banklist").show();
+                }else {
+                    $("#shoufu_banklist").hide();
+                }
+            });
+    });
 
     function toPay(){
         var payWay = $("input[name='payWay']:checked").val();
@@ -215,8 +304,15 @@
             if(strs[0] == "shoufu"){
                 $("#payWay").val(10);
                 $("#payModel").val(strs[1] );
-                if(payWay.indexOf("bank")!=-1) {
-                    $("#payCode").val(strs[2]);
+
+                if(strs[1] == "bank") {
+                    var payBank = $("input[name='f2']:checked").val();
+                    if (typeof payBank == "undefined" || payBank == "") {
+                        layer.msg("请选择银行支付");
+                        return false;
+                    }
+
+                    $("#payCode").val(payBank);
                 }
             }
         }

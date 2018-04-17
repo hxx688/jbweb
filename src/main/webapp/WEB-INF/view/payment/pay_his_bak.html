@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>鸿宝财富</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
+    <link rel="stylesheet" href="${ctxPath}/static/style/css/pay.css">
+    <script src="${ctxPath}/static/jquery/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="${ctxPath}/static/layer/layer.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            var code = "${code}";
+            if (code == "0") {
+            } else if (code == "1") {
+                layer.msg("${msg}",{
+                    shift : 6
+                });
+            }
+        })
+    </script>
+</head>
+
+<body>
+<form name="payForm" action="${ctxPath}/payment/toPay" method="post">
+    <input type="hidden" name="person_id" value="${person.crypt_id!}"/>
+    <input type="hidden" name="payWay" id="payWay" value="8"/>
+    <input type="hidden" name="payModel" id="payModel" value=""/>
+    <input type="hidden" name="payCode" id="payCode" value=""/>
+    <div class="page" style="padding-left:30%;padding-right:30%;">
+        <header class='demos-header'>
+            <h1 class="demos-title"></h1>
+            <p class='demos-sub-title'>鸿宝-${person.real_name!}</p>
+        </header>
+        <div class="weui-cells bd">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">帐号:</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ${person.mobile}
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">余额:</label>
+                </div>
+                <div class="weui-cell__bd">
+                    ${person.amount}
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">金额(￥)</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" id="money1" name="total_fee"
+                           name="total_fee" placeholder="请输入金额" />
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">备注</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" id="remark" name="remark"
+                           placeholder="请输入备注" />
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells__title">支付方式</div>
+        <div class="weui-cells weui-cells_radio">
+            <label class="weui-cell weui-check__label" for="payWay1">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">微信扫码
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay1" value="wxcode" checked="checked" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-check__label" for="payWay2">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">QQ钱包扫码
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay2" value="qqpay" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-check__label" for="payWay3">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">网银充值（一）
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay3" value="wxcode" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-check__label" for="payWay4">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">网银充值（二）
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay4" value="wxcode" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-check__label" for="payWay5">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">快捷支付充值（一）
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay5" value="wxcode" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+            <label class="weui-cell weui-check__label" for="payWay6">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">快捷支付充值（二）
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay6" value="wxcode" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+            <label class="weui-cell weui-check__label" for="payWay7">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">易达(网银)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay7" value="yida_bank" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+            <label class="weui-cell weui-check__label" for="payWay8">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">易达(快捷)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay8" value="yida_easy" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+
+            <label class="weui-cell weui-check__label" for="payWay9">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">首捷支付(快捷)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay9" value="shoufu|kuaijie" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+            <label class="weui-cell weui-check__label" for="payWay10">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">首捷支付(网银)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay10" value="shoufu|bank|ICBC" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+
+        </div>
+        <div class="bd">
+            <div class="weui-btn-area">
+                <button onClick="return toPay()" class="weui-btn weui-btn_primary">确定支付</button>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+
+<script type="text/javascript">
+
+    function toPay(){
+        var payWay = $("input[name='payWay']:checked").val();
+        $("#payModel").val(payWay);
+        var remark = $("#remark").val();
+        var total_fee = $.trim($("#money1").val());
+
+        if(payWay == "yida_bank" || payWay == "yida_easy" ) {
+            $("#payWay").val(9);
+        }
+        if(payWay.indexOf("|") != -1) {
+            var strs = payWay.split("|");
+            if(strs[0] == "shoufu"){
+                $("#payWay").val(10);
+                $("#payModel").val(strs[1] );
+                if(payWay.indexOf("bank")!=-1) {
+                    $("#payCode").val(strs[2]);
+                }
+            }
+        }
+
+        if(total_fee == ""){
+            layer.msg("金额不能为空",{
+                shift : 6
+            });
+            return false;
+        }else{
+            document.forms['payForm'].submit();
+        };
+
+    };
+
+    /*
+    function toPay(){
+        var payWay = $("input[name='payWay']:checked").val();
+        var remark = $("#remark").val();
+        var total_fee = $.trim($("#money1").val());
+        if(total_fee == ""){
+             layer.msg("金额不能为空",{
+                 shift : 6
+             });
+            return;
+        };
+
+        $.post("${ctxPath}/payment/toPay", {
+            total_fee : total_fee,
+            remark :　remark,
+            payWay : payWay,
+            person_id : "${person.crypt_id!}"
+        }, function(res) {
+            if (res.code == 0) {
+                var path = res.data;
+                window.location.href = path;
+            }else if (res.code == 1) {
+                layer.msg(res.message,{
+                     shift : 6
+                });
+            }else {
+                 layer.msg(res.message, {
+                     shift : 6
+                });
+            };
+        }, "json");
+    };
+    */
+
+</script>
+</html>
