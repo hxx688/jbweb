@@ -1,0 +1,1 @@
+alter table dt_payinfo MODIFY column `pay_type` varchar(2) DEFAULT NULL COMMENT '支付方式：0银联 1微信 2支付宝';
