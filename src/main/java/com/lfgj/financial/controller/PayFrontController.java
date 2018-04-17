@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.lfgj.clinet.pay.payment.utils.MD5Util;
 import com.lfgj.clinet.payHqf.exception.PayException;
 import com.lfgj.clinet.payHqf.util.ConstantHqf;
 import com.lfgj.clinet.payHqf.util.Md5Util;
@@ -112,6 +113,76 @@ public class PayFrontController extends BaseController {
 		mm.put("result_info", result);
 		return BASE_PATH + "notify_url.html";
 	}
+
+
+
+    /**
+     * 首捷支付回调
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyShouJie")
+    public String notifyShouJie(ModelMap mm, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+        log.info("通道（首捷支付）支付异步回调通知:"+this.getParas());
+
+        String result = "fail";
+        try {
+            PrintWriter out = response.getWriter();
+
+            String apiName = this.getParameter("apiName");
+            String notifyTime = this.getParameter("notifyTime");
+            String tradeAmt = this.getParameter("tradeAmt");
+            String merchNo = this.getParameter("merchNo");
+            String merchParam = this.getParameter("merchParam");
+            String orderNo = this.getParameter("orderNo");
+            String tradeDate = this.getParameter("tradeDate");
+            String accNo = this.getParameter("accNo");
+            String accDate = this.getParameter("accDate");
+            String orderStatus = this.getParameter("orderStatus");
+            String signMsg = this.getParameter("signMsg");
+
+            String status =this.getParameter("status");
+            String partner		=this.getParameter("partner");
+            String ordernumber		=this.getParameter("ordernumber");
+            String paymoney		=this.getParameter("paymoney");
+            String paytype			=this.getParameter("paytype");
+            String sdpayno			=this.getParameter("sdpayno");
+            String remark			=this.getParameter("remark");
+            String sign			=this.getParameter("sign");
+
+            String userkey = ConstConfig.pool.get("pay.shoujie.key"); // 商家密钥
+
+            String mysign=MD5Util
+                    .string2MD5("partner="+partner+"&status="+status+"&sdpayno="+sdpayno+"&ordernumber="+ordernumber+"&paymoney="+paymoney+"&paytype="+paytype+"&"+userkey);
+
+
+            if (sign.equals(mysign)){
+
+                if(status.equals(1)){
+
+                    out.println("success");
+
+                }else {
+                    out.println("fail");
+
+                }
+            }else {
+                out.println("signerr");
+            }
+
+            return null;
+
+
+        }catch(Exception e) {
+            log.error(e.getMessage(), e);
+            throw new PayException("系统出现错误!");
+        }
+
+    }
+
+
 
     /**
      * 立达付

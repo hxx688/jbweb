@@ -104,6 +104,7 @@ public class PaymentController extends BaseController {
 		String person_id = getParameter("person_id");
         String payType = getParameter("payWay");
         String payModel = getParameter("payModel");
+        String payCode = getParameter("payCode");
 
 		if (StrKit.isEmpty(person_id)) {
 			LogKit.info("=============没有找到商户号,请确认付款码是否有误===============");
@@ -147,7 +148,7 @@ public class PaymentController extends BaseController {
 		}
 		PrePayHqfClient pp = new PrePayHqfClient();
 
-        ResultVo payRs = payFactory.generatePayService(payType).getPayUrl(money, orderNo, payModel);
+        ResultVo payRs = payFactory.generatePayService(payType).getPayUrl(money, orderNo, payModel, payCode);
 
 		if("0".equals(payRs.getReturnCode())){
 			mm.put("code", 0);

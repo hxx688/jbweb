@@ -28,6 +28,7 @@
     <input type="hidden" name="person_id" value="${person.crypt_id!}"/>
     <input type="hidden" name="payWay" id="payWay" value="8"/>
     <input type="hidden" name="payModel" id="payModel" value=""/>
+    <input type="hidden" name="payCode" id="payCode" value=""/>
     <div class="page" style="padding-left:30%;padding-right:30%;">
         <header class='demos-header'>
             <h1 class="demos-title"></h1>
@@ -163,6 +164,31 @@
             </label>
 
 
+            <label class="weui-cell weui-check__label" for="payWay9">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">首捷支付(快捷)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay9" value="shoufu|kuaijie" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+            <label class="weui-cell weui-check__label" for="payWay10">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">首捷支付(网银)
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay10" value="shoufu|bank|ICBC" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
+
         </div>
         <div class="bd">
             <div class="weui-btn-area">
@@ -183,6 +209,16 @@
 
         if(payWay == "yida_bank" || payWay == "yida_easy" ) {
             $("#payWay").val(9);
+        }
+        if(payWay.indexOf("|") != -1) {
+            var strs = payWay.split("|");
+            if(strs[0] == "shoufu"){
+                $("#payWay").val(10);
+                $("#payModel").val(strs[1] );
+                if(payWay.indexOf("bank")!=-1) {
+                    $("#payCode").val(strs[2]);
+                }
+            }
         }
 
         if(total_fee == ""){

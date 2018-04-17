@@ -26,6 +26,9 @@ public class PayFactory implements IPayFactory {
     @Autowired
     private IPayService prePayYidaClient;
 
+    @Autowired
+    private IPayService prePayShouJieClient;
+
     @Override
     public IPayService generatePayService(String payType) throws Exception{
 //        put("0", "银联快捷支付");
@@ -40,7 +43,9 @@ public class PayFactory implements IPayFactory {
             return prePayLidaClient;
         }else if("9".equals(payType)) {
             return prePayYidaClient;
-        } else{
+        }else if("10".equals(payType)){
+            return prePayShouJieClient;
+        }else{
             throw new Exception("支付渠道不存在!");
         }
     }

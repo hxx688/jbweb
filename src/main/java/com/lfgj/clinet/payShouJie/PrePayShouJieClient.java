@@ -1,9 +1,17 @@
 package com.lfgj.clinet.payShouJie;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.lfgj.clinet.pay.payment.PayInfo;
+import com.lfgj.clinet.pay.payment.utils.MD5Util;
 import com.lfgj.clinet.payFactory.IPayService;
 import com.lfgj.clinet.payHqf.exception.PayException;
-import com.lfgj.clinet.payLida.PaymentForOnlineService;
 import com.lfgj.member.model.Member;
 import com.lfgj.member.service.MemberService;
 import com.lfgj.util.LfConstant;
@@ -13,12 +21,6 @@ import com.rrgy.core.annotation.Client;
 import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 支付通道：立达付
@@ -36,9 +38,10 @@ public class PrePayShouJieClient extends RequestMethod implements IPayService{
 	public ResultVo url() {
 		ResultVo rv = new ResultVo();
 		String person_id = getParams("id","");	
-		String pay_type = "10"; // 环球付
+		String pay_type = "10";
 		String money = getParams("money","0");
-        String payModel = getParams("payModel", "wxcode");
+        String payModel = getParams("payModel", "kuaijie");
+        String payCode = getParams("payCode", "ICBC");
 		
 		Member person = Blade.create(Member.class).findById(person_id);
 		
@@ -76,7 +79,7 @@ public class PrePayShouJieClient extends RequestMethod implements IPayService{
 			return rv;
 		}
 		
-		return getPayUrl(money, orderNo, payModel);
+		return getPayUrl(money, orderNo, payModel, payCode);
 	}
 	
 	@Override
@@ -101,49 +104,44 @@ public class PrePayShouJieClient extends RequestMethod implements IPayService{
 	private Map<String,Object> getParameter(String money, String orderNo, String... extendStrs) throws PayException{
 
         Map<String,Object> parameter = new HashMap<String,Object>();
-		String keyValue = ConstConfig.pool.get("pay.shoujie.key"); // 商家密钥
+		String userkey = ConstConfig.pool.get("pay.shoujie.key"); // 商家密钥
 
 		String ver = "1.0"; // 默认1.0
 		String partner = ConstConfig.pool.get("pay.shoujie.account"); // 商户编号
 		String ordernumber = orderNo; // 商户订单号
-		String paymoney = money; // 支付金额
-		String paytype =  "";// TODO 交易币种
-		String p5_Pid = "productname"; // 商品名称
-		String p6_Pcat = "producttype"; // 商品种类
-		String p7_Pdesc = "productdesc"; // 商品描述
-		String p8_Url = ConstConfig.pool.get("config.domain")
-						+ "/payfront/notifyLdf"; // 商户接收支付成功数据的地址
-		String p9_SAF = "0"; // 需要填写送货信息 0：不需要  1:需要
-		String pa_MP = "6252"; // 商户扩展信息
-		String pd_FrpId = "wxcode";
-		if (extendStrs != null && extendStrs.length > 0) {
-		    if(null != extendStrs[0] && !"".equals(extendStrs[0].trim())) {
-                pd_FrpId = extendStrs[0];
-            }
-		}
-		String pr_NeedResponse = "1"; // 默认为"1"，需要应答机制
+        Double dbMoney = new BigDecimal(money).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		String paymoney = String.format("%.2f", dbMoney); //  String.valueOf(); // 支付金额
+		String paytype =  extendStrs[0] ;
+        String bankcode = "ICBC";
+        if(extendStrs.length > 1){
+            bankcode = extendStrs[1];
+        }
 
-		// 获得MD5-HMAC签名
-//		String hmac = PaymentForOnlineService.getReqMd5HmacForOnlinePayment(
-//			p0_Cmd, p1_MerId, p2_Order, p3_Amt, p4_Cur, p5_Pid, p6_Pcat,
-//			p7_Pdesc, p8_Url, p9_SAF, pa_MP, pd_FrpId, pr_NeedResponse,
-//			keyValue);
-//
-//
-//        parameter.put("p0_Cmd", p0_Cmd);
-//		parameter.put("p1_MerId", p1_MerId);
-//		parameter.put("p2_Order", p2_Order);
-//		parameter.put("p3_Amt", p3_Amt);
-//		parameter.put("p4_Cur", p4_Cur);
-//		parameter.put("p5_Pid", p5_Pid);
-        parameter.put("p6_Pcat", p6_Pcat);
-        parameter.put("p7_Pdesc", p7_Pdesc);
-        parameter.put("p8_Url", p8_Url);
-        parameter.put("p9_SAF", p9_SAF);
-        parameter.put("pa_MP", pa_MP);
-        parameter.put("pd_FrpId", pd_FrpId);
-        parameter.put("pr_NeedResponse", pr_NeedResponse);
-//        parameter.put("hmac", hmac);
+		String notifyurl = ConstConfig.pool.get("config.domain")
+						+ "/payfront/notifyShouJie"; // 异步通知URL
+		String returnurl = "null";  // 同步跳转URL
+		String remark = ""; // 订单备注说明
+        String getCode = "0"; // 微信选项, 0:默认, 1: 仅获取二维码
+        StringBuffer sb = new StringBuffer();
+        sb.append("Ver=").append(ver).append("&partner=").append(partner).append("&paymoney=")
+                .append(paymoney).append("&ordernumber=").append(ordernumber).append("&notifyurl=").append(notifyurl)
+                .append("&returnurl=").append(returnurl).append("&").append(userkey);
+        System.out.println(sb.toString());
+        String sign = MD5Util
+				.string2MD5(sb.toString());
+
+        System.out.println(sign);
+        parameter.put("ver", ver);
+        parameter.put("partner", partner);
+        parameter.put("ordernumber", ordernumber);
+        parameter.put("paymoney", paymoney);
+        parameter.put("paytype", paytype);
+        parameter.put("notifyurl", notifyurl);
+        parameter.put("returnurl", returnurl);
+        parameter.put("remark", remark);
+        parameter.put("bankcode", bankcode);
+        parameter.put("sign", sign);
+//        parameter.put("get_code", getCode);
 
 
 
