@@ -131,18 +131,6 @@ public class PayFrontController extends BaseController {
         try {
             PrintWriter out = response.getWriter();
 
-            String apiName = this.getParameter("apiName");
-            String notifyTime = this.getParameter("notifyTime");
-            String tradeAmt = this.getParameter("tradeAmt");
-            String merchNo = this.getParameter("merchNo");
-            String merchParam = this.getParameter("merchParam");
-            String orderNo = this.getParameter("orderNo");
-            String tradeDate = this.getParameter("tradeDate");
-            String accNo = this.getParameter("accNo");
-            String accDate = this.getParameter("accDate");
-            String orderStatus = this.getParameter("orderStatus");
-            String signMsg = this.getParameter("signMsg");
-
             String status =this.getParameter("status");
             String partner		=this.getParameter("partner");
             String ordernumber		=this.getParameter("ordernumber");
@@ -161,6 +149,8 @@ public class PayFrontController extends BaseController {
             if (sign.equals(mysign)){
 
                 if(status.equals(1)){
+
+                    boolean b = memberService.updatePayInfo(ordernumber, sdpayno, paymoney, false);
 
                     out.println("success");
 
