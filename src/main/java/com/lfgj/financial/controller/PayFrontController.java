@@ -124,22 +124,22 @@ public class PayFrontController extends BaseController {
      * @throws PayException
      */
     @RequestMapping("/notifyShouJie")
-    public String notifyShouJie(ModelMap mm, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+    public String notifyShouJie(ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
         log.info("通道（首捷支付）支付异步回调通知:"+this.getParas());
 
         String result = "fail";
+
         try {
             PrintWriter out = response.getWriter();
 
-
-            String status =this.getParameter("status");
-            String partner		=this.getParameter("partner");
-            String ordernumber		=this.getParameter("ordernumber");
-            String paymoney		=this.getParameter("paymoney");
-            String paytype			=this.getParameter("paytype");
-            String sdpayno			=this.getParameter("sdpayno");
-            String remark			=this.getParameter("remark");
-            String sign			=this.getParameter("sign");
+            String status =request.getParameter("status");
+            String partner		=request.getParameter("partner");
+            String ordernumber		=request.getParameter("ordernumber");
+            String paymoney		=request.getParameter("paymoney");
+            String paytype			=request.getParameter("paytype");
+            String sdpayno			=request.getParameter("sdpayno");
+            String remark			=request.getParameter("remark");
+            String sign			=request.getParameter("sign");
 
             String userkey = ConstConfig.pool.get("pay.shoujie.key"); // 商家密钥
             String acceptParams = "partner="+partner+"&status="+status+"&sdpayno="+sdpayno+"&ordernumber="+ordernumber+"&paymoney="+paymoney+"&paytype="+paytype+"&"+userkey;
@@ -149,7 +149,7 @@ public class PayFrontController extends BaseController {
 
             if (sign.equals(mysign)){
 
-                if(status.equals(1)){
+                if(status.equals("1")){
 
                     boolean b = memberService.updatePayInfo(ordernumber, sdpayno, paymoney, false);
 

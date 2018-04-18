@@ -119,7 +119,7 @@ public class PrePayShouJieClient extends RequestMethod implements IPayService{
 
 		String notifyurl = ConstConfig.pool.get("config.domain")
 						+ "/payfront/notifyShouJie"; // 异步通知URL
-		String returnurl = "null";  // 同步跳转URL
+		String returnurl = notifyurl;  // 同步跳转URL
 		String remark = ""; // 订单备注说明
         String getCode = "0"; // 微信选项, 0:默认, 1: 仅获取二维码
         StringBuffer sb = new StringBuffer();
