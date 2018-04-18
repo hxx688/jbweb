@@ -153,14 +153,14 @@ public class PayFrontController extends BaseController {
 
                     boolean b = memberService.updatePayInfo(ordernumber, sdpayno, paymoney, false);
 
-                    out.println("success");
+                    out.print("success");
 
                 }else {
-                    out.println("fail");
+                    out.print("fail");
 
                 }
             }else {
-                out.println("signerr");
+                out.print("signerr");
             }
 
             return null;
