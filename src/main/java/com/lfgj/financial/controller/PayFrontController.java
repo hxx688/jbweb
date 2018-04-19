@@ -174,6 +174,63 @@ public class PayFrontController extends BaseController {
     }
 
 
+    /**
+     * 码支付回调
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyMazhifu")
+    public String notifyMazhifu(ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+        log.info("通道（首捷支付）支付异步回调通知:"+this.getParas());
+
+        String result = "fail";
+
+        try {
+            PrintWriter out = response.getWriter();
+
+            String status =request.getParameter("status");
+            String partner		=request.getParameter("partner");
+            String ordernumber		=request.getParameter("ordernumber");
+            String paymoney		=request.getParameter("paymoney");
+            String paytype			=request.getParameter("paytype");
+            String sdpayno			=request.getParameter("sdpayno");
+            String remark			=request.getParameter("remark");
+            String sign			=request.getParameter("sign");
+
+            String userkey = ConstConfig.pool.get("pay.shoujie.key"); // 商家密钥
+            String acceptParams = "partner="+partner+"&status="+status+"&sdpayno="+sdpayno+"&ordernumber="+ordernumber+"&paymoney="+paymoney+"&paytype="+paytype+"&"+userkey;
+            log.info("accept params => " + acceptParams);
+            String mysign = MD5Util.string2MD5(acceptParams);
+
+
+            if (sign.equals(mysign)){
+
+                if(status.equals("1")){
+
+                    boolean b = memberService.updatePayInfo(ordernumber, sdpayno, paymoney, false);
+
+                    out.print("success");
+
+                }else {
+                    out.print("fail");
+
+                }
+            }else {
+                out.print("signerr");
+            }
+
+            return null;
+
+
+        }catch(Exception e) {
+            log.error(e.getMessage(), e);
+            throw new PayException("系统出现错误!");
+        }
+
+    }
+
 
     /**
      * 立达付
