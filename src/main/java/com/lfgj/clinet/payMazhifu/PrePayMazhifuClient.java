@@ -28,7 +28,7 @@ import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
 
 /**
- * 支付通道：立达付
+ * 支付通道：码支付
  * @author Administrator
  *
  */
@@ -43,10 +43,9 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
     public ResultVo url() {
         ResultVo rv = new ResultVo();
         String person_id = getParams("id","");
-        String pay_type = "10";
+        String pay_type = "11";
         String money = getParams("money","0");
-        String payModel = getParams("payModel", "kuaijie");
-        String payCode = getParams("payCode", "ICBC");
+        String payModel = getParams("payModel", "1");
 
         Member person = Blade.create(Member.class).findById(person_id);
 
@@ -84,7 +83,7 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
             return rv;
         }
 
-        return getPayUrl(money, orderNo, payModel, payCode);
+        return getPayUrl(money, orderNo, payModel);
     }
 
     @Override
@@ -92,11 +91,11 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
         ResultVo rv = new ResultVo();
         try{
             Map<String,Object> requestParams = getParameter(money, orderNo, extendStrs);
-            String payUrl = ConstConfig.pool.get("pay.shoujie.url") + "/GateWay/ReceiveBank.aspx";
+            String payUrl = ConstConfig.pool.get("pay.mazhifu.url");
             requestParams.put("pay_url", payUrl);
             rv.setReturnCode("0");
             rv.setReturnParams(requestParams);
-            log.info("首捷支付请求参数："+requestParams);
+            log.info("码支付请求参数："+requestParams);
             return rv;
         }catch(Exception e){
             e.printStackTrace();
@@ -109,45 +108,35 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
     private Map<String,Object> getParameter(String money, String orderNo, String... extendStrs) throws PayException{
 
         Map<String,Object> parameter = new HashMap<String,Object>();
-        String token = ConstConfig.pool.get("pay.mazhifu.key"); // 商家密钥
+        String key = ConstConfig.pool.get("pay.mazhifu.key"); // 商家密钥
         String codepay_id = ConstConfig.pool.get("pay.mazhifu.account"); // 商家账号
 
         String price= money; //表单提交的价格
-        String type=request.getParameter("type"); //支付类型  1：支付宝 2：QQ钱包 3：微信
-        String pay_id=orderNo; //支付人的唯一标识
-        String param= null; //自定义一些参数 支付后返回
+        String type = extendStrs[0]; //支付类型  1：支付宝 2：QQ钱包 3：微信
+        String pay_id= orderNo; //支付人的唯一标识
+        String param= orderNo; //自定义一些参数 支付后返回
 
         String notify_url=ConstConfig.pool.get("config.domain")
                 + "/payfront/notifyMazhifu"; // 异步通知URL
         String return_url=notify_url;//支付后同步跳转地址
 
+        StringBuffer url =  new StringBuffer("id=").append(codepay_id)
+                .append("&notify_url=").append(notify_url)
+                .append("&param=").append(param)
+                .append("&pay_id=").append(pay_id)
+                .append("&price=").append(price)
+                .append("&return_url=").append(return_url)
+                .append("&type=").append(type)
+                .append(key);
 
-
-
-
-        String remark = ""; // 订单备注说明
-        String getCode = "0"; // 微信选项, 0:默认, 1: 仅获取二维码
-        StringBuffer sb = new StringBuffer();
-        sb.append("Ver=").append(ver).append("&partner=").append(partner).append("&paymoney=")
-                .append(paymoney).append("&ordernumber=").append(ordernumber).append("&notifyurl=").append(notifyurl)
-                .append("&returnurl=").append(returnurl).append("&").append(userkey);
-        System.out.println(sb.toString());
-        String sign = MD5Util
-                .string2MD5(sb.toString());
-
-        System.out.println(sign);
-        parameter.put("ver", ver);
-        parameter.put("partner", partner);
-        parameter.put("ordernumber", ordernumber);
-        parameter.put("paymoney", paymoney);
-        parameter.put("paytype", paytype);
-        parameter.put("notifyurl", notifyurl);
-        parameter.put("returnurl", returnurl);
-        parameter.put("remark", remark);
-        parameter.put("bankcode", bankcode);
-        parameter.put("sign", sign);
-
-
+        parameter.put("id", codepay_id);
+        parameter.put("notify_url", notify_url);
+        parameter.put("param", param);
+        parameter.put("pay_id", pay_id);
+        parameter.put("price", price);
+        parameter.put("return_url", return_url);
+        parameter.put("type", type);
+        parameter.put("sign", MD5Util.string2MD5(url.toString()));
 
         return parameter;
     }

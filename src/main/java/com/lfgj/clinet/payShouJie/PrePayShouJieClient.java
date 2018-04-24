@@ -87,7 +87,7 @@ public class PrePayShouJieClient extends RequestMethod implements IPayService{
 		ResultVo rv = new ResultVo();
 		try{
 			Map<String,Object> requestParams = getParameter(money, orderNo, extendStrs);
-            String payUrl = ConstConfig.pool.get("pay.shoujie.url") + "/GateWay/ReceiveBank.aspx";
+            String payUrl = ConstConfig.pool.get("pay.shoujie.url");
 			requestParams.put("pay_url", payUrl);
 	        rv.setReturnCode("0");
 			rv.setReturnParams(requestParams);
