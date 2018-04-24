@@ -1,6 +1,6 @@
 list
 ===
-select f.*,u.is_agent,u.agent_name, 0 from dt_financial f,lf_member u where f.user_id=u.id and u.is_agent=0
+select f.*,u.is_agent,u.agent_name, 0 from dt_financial f,lf_member u where f.user_id=u.id 
 
 listUser
 ===

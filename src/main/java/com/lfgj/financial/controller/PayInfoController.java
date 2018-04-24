@@ -2,16 +2,13 @@ package com.lfgj.financial.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lfgj.financial.service.FinancialService;
 import com.lfgj.financial.service.PayInfoService;
-import com.lfgj.member.model.Member;
 import com.rrgy.common.base.BaseController;
-import com.rrgy.core.plugins.dao.Blade;
-import com.rrgy.core.toolbox.Paras;
 import com.rrgy.core.toolbox.ajax.AjaxResult;
 
 /**
@@ -44,9 +41,9 @@ public class PayInfoController extends BaseController {
 	
 	@ResponseBody
 	@RequestMapping("/syncStatus")
-	public AjaxResult syncStatus() {
+	public AjaxResult syncStatus() throws Exception{
 		String ids = getParameter("ids");
-		boolean temp = service.syncStatus(ids);
+		boolean temp = service.forceStatus(ids);
 		if (temp) {
 			return success("操作成功!");
 		} else {

@@ -8,7 +8,14 @@ import com.rrgy.core.base.service.IService;
  * 2017-09-18 21:29:22
  */
 public interface PayInfoService extends IService<Financial>{
-	
+
+    /**
+     * 强制刷新状态
+     * @param id
+     * @return
+     */
+    public boolean forceStatus(String id) throws Exception;
+
 	/**
 	 * 同步状态
 	 * @param id

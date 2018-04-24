@@ -32,6 +32,9 @@ public class LfConstant {
         put("2", "支付完成");
         put("3", "已关闭");
         put("4", "交易撤销");
+        put("5", "无效");
+        put("6", "刷新成功");
+
     }};
 	
 	public final static Map<String,String> ORDER_BUY_TYPE = new HashMap<String,String>(){{
