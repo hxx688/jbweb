@@ -15,9 +15,9 @@ public class PackMain
     private String zipName;
     private static String exportFolder = null;
     /**
-     * 需要打包的目标工程CLASS运行目录
+     * 需要打包的目标工程CLASS运行目录， 末尾必须要有结束符
      */
-    private static String targetHome = "C:/IntellijWorkspace/jbzx/jbweb/target/classes/";
+    private static String targetHome = "D:\\TestCode\\lfgj\\target\\classes\\";
 
     public static void main(String[] args)
             throws Exception
@@ -44,7 +44,11 @@ public class PackMain
         File temp = null;
         String line = null;
         while ((line = reader.readLine()) != null) {
-            line = line.trim().replaceAll("\\.", "/");
+            if(line.indexOf(".java")!= -1) {
+                line = line.trim().replaceAll("\\.java$", "");
+            }else {
+                line = line.trim().replaceAll("\\.", "/");
+            }
             if (line.length() != 0) {
                 line = targetHome + "/" + line + ".class";
                 temp = new File(line);
