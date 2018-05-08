@@ -1,5 +1,7 @@
 package com.lfgj.clinet.pay.payment.utils;
 
+import com.lfgj.clinet.payHqf.util.Md5Util;
+
 import java.security.MessageDigest;
 
 public class MD5Util {
@@ -31,6 +33,11 @@ public class MD5Util {
         }  
         return hexValue.toString();  
   
-    }  
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(MD5Util.string2MD5("test"));
+    }
   
 }

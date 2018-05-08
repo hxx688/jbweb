@@ -272,6 +272,18 @@
                 </div>
             </label>
 
+            <label class="weui-cell weui-check__label" for="payWay12">
+
+                <div class="weui-cell__bd">
+                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">网逸支付
+                </div>
+                <div class="weui-cell__ft">
+                    <input type="radio" name="payWay" class="weui-check" id="payWay12" value="wish|quickbank" />
+                    <span class="weui-icon-checked"></span>
+                </div>
+            </label>
+
         </div>
         <div class="bd">
             <div class="weui-btn-area">
@@ -328,6 +340,9 @@
                 }
             }else if(strs[0] == "mazhifu"){
                 $("#payWay").val(11);
+                $("#payModel").val(strs[1] );
+            }else if(strs[0] == "wish"){
+                $("#payWay").val(12);
                 $("#payModel").val(strs[1] );
             }
         }

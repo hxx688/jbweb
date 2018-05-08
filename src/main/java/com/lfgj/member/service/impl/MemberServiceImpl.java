@@ -209,7 +209,7 @@ public class MemberServiceImpl extends BaseService<Member> implements MemberServ
 		f.setAmount(amout);
 		f.setCreate_time(new Date());
 		f.setUser_amount(m.getAmount());
-		f.setDesc(isVirtual ? "后台虚拟充值" : "");
+		f.setDesc(isVirtual ? "1" : "");
 		f.setOrderNo(orderNo);
 		temp = Blade.create(Financial.class).save(f);
 		if(!temp){

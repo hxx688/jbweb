@@ -173,6 +173,65 @@ public class PayFrontController extends BaseController {
 
 
     /**
+     * 网逸支付回调
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyWish")
+    public String notifyWish(ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+        log.info("通道（网逸支付）支付异步回调通知:"+this.getParas());
+        String result = "fail";
+
+        try {
+            PrintWriter out = response.getWriter();
+
+            String status =request.getParameter("status");
+            String customerid		=request.getParameter("customerid");
+            String sdpayno		=request.getParameter("sdpayno");  // 平台订单号
+            String sdorderno		=request.getParameter("sdorderno");  // 商户订单号
+            String total_fee			=request.getParameter("total_fee");
+            String paytype			=request.getParameter("paytype");
+            String remark			=request.getParameter("remark");
+            String sign			=request.getParameter("sign");
+
+            String userkey = ConstConfig.pool.get("pay.wish.key"); // 商家密钥
+            String acceptParams = "customer-id="+customerid+"&status="+status+"&sdpayno="+sdpayno+"&sdorderno="+sdorderno
+                    +"&total_fee="+total_fee+"&paytype="+paytype+"&"+userkey;
+            log.info("accept params => " + acceptParams);
+            String mysign = MD5Util.string2MD5(acceptParams);
+
+
+            if (sign.equals(mysign)){
+
+                if(status.equals("1")){
+
+                    boolean b = memberService.updatePayInfo(sdorderno, sdpayno, total_fee, false);
+
+                    out.print("success");
+
+                }else {
+                    out.print("fail");
+
+                }
+            }else {
+                out.print("signerr");
+            }
+
+            return null;
+
+
+        }catch(Exception e) {
+            log.error(e.getMessage(), e);
+            throw new PayException("系统出现错误!");
+        }
+
+    }
+
+
+
+    /**
      * 码支付回调
      * @param mm
      * @return
@@ -182,17 +241,7 @@ public class PayFrontController extends BaseController {
     @RequestMapping("/notifyMazhifu")
     public String notifyMazhifu(ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
         log.info("通道（码支付）支付异步回调通知:"+this.getParas());
-
-        Map<String, Object> paramstest = new HashMap<String, Object>();
-        String url = "https://sms.yunpian.com/v2/sms/single_send.json";
-        paramstest.put("apikey", "e3134479c72721f0c6949a4eda2e4da2");
-        String text = "%E3%80%90%E6%AF%8F%E5%A4%A9%E8%8A%B1%E3%80%91%E6%82%A8%E7%9A%84%E9%AA%8C%E8%AF%81%E7%A0%81%E6%98%AF6625%E3%80%82%E5%A6%82%E9%9D%9E%E6%9C%AC%E4%BA%BA%E6%93%8D%E4%BD%9C%EF%BC%8C%E8%AF%B7%E5%BF%BD%E7%95%A5%E6%9C%AC%E7%9F%AD%E4%BF%A1";
-        paramstest.put("text", text);
-        paramstest.put("mobile", "18124663678");
-        System.out.println(HttpKit.post(url, paramstest));
-
         String result = "fail";
-
         try {
 
             PrintWriter out = response.getWriter();

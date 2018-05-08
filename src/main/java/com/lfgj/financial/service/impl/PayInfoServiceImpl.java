@@ -120,7 +120,7 @@ public class PayInfoServiceImpl extends BaseService<Financial> implements PayInf
         f.setAmount(amout);
         f.setCreate_time(new Date());
         f.setUser_amount(m.getAmount());
-        f.setDesc("后台刷新重置");
+        f.setDesc("0");
         f.setOrderNo(orderNo);
         temp = Blade.create(Financial.class).save(f);
         if(!temp){
