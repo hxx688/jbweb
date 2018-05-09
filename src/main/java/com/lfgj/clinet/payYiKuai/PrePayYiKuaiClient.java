@@ -1,7 +1,8 @@
-package com.lfgj.clinet.payMazhifu;
+package com.lfgj.clinet.payYiKuai;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.lfgj.clinet.payFactory.IPayService;
 import com.lfgj.clinet.payHqf.exception.PayException;
 import com.lfgj.member.model.Member;
 import com.lfgj.member.service.MemberService;
+import com.lfgj.util.DateUtils;
 import com.lfgj.util.LfConstant;
 import com.lfgj.util.PayTypeEnum;
 import com.rrgy.common.iface.RequestMethod;
@@ -23,14 +25,14 @@ import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
 
 /**
- * 支付通道：码支付
+ * 支付通道：易快支付
  * @author Administrator
  *
  */
 
 @Service
-@Client(name = "lf_prepay_mazhifu")
-public class PrePayMazhifuClient extends RequestMethod implements IPayService{
+@Client(name = "lf_prepay_yikuai")
+public class PrePayYiKuaiClient extends RequestMethod implements IPayService{
 
     @Autowired
     MemberService service;
@@ -38,10 +40,9 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
     public ResultVo url() {
         ResultVo rv = new ResultVo();
         String person_id = getParams("id","");
-        String pay_type = "11";
+        String pay_type = "13";
         String money = getParams("money","0");
-        String payModel = getParams("payModel", "1");
-
+        String payModel = "WXZF";
         Member person = Blade.create(Member.class).findById(person_id);
 
         if(person == null){
@@ -85,13 +86,13 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
     public ResultVo getPayUrl(String money, String orderNo, String... extendStrs){
         ResultVo rv = new ResultVo();
         try{
-            extendStrs = new String[]{"1"};
-            Map<String,Object> requestParams = getParameter(money, orderNo, extendStrs);
-            String payUrl = ConstConfig.pool.get("pay.mazhifu.url");
+            String payModel = "WXZF";
+            Map<String,Object> requestParams = getParameter(money, orderNo, payModel);
+            String payUrl = ConstConfig.pool.get("pay.yikuai.url");
             requestParams.put("pay_url", payUrl);
             rv.setReturnCode("0");
             rv.setReturnParams(requestParams);
-            log.info("码支付请求参数："+requestParams);
+            log.info("网逸支付请求参数："+requestParams);
             return rv;
         }catch(Exception e){
             e.printStackTrace();
@@ -103,38 +104,37 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
 
     private Map<String,Object> getParameter(String money, String orderNo, String... extendStrs) throws PayException{
 
-        Map<String,Object> parameter = new HashMap<String,Object>();
-        String key = ConstConfig.pool.get("pay.mazhifu.key"); // 商家密钥
-        String codepay_id = ConstConfig.pool.get("pay.mazhifu.account"); // 商家账号
+        Map<String,Object> params = new LinkedHashMap<>();
+        String account = ConstConfig.pool.get("pay.yikuai.account"); // 商家账号
+        String key = ConstConfig.pool.get("pay.yikuai.key"); // 商家密钥
 
-        String price= money; //表单提交的价格
-        String type = extendStrs[0]; //支付类型  1：支付宝 2：QQ钱包 3：微信
-        String pay_id= orderNo; //支付人的唯一标识
-        String param= orderNo; //自定义一些参数 支付后返回
+        params.put("pay_memberid", account);
+        params.put("pay_orderid", orderNo);
+        Double dbMoney = new BigDecimal(money).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        String paymoney = String.format("%.2f", dbMoney); //  String.valueOf(); // 支付金额
+        params.put("pay_amount", paymoney);
 
+        params.put("pay_applydate", DateUtils.formatDefault(new Date()));
+        params.put("pay_bankcode", "WXZF");
         String notify_url=ConstConfig.pool.get("config.domain")
-                + "/payfront/notifyMazhifu"; // 异步通知URL
-        String return_url=notify_url;//支付后同步跳转地址
+                + "/payfront/notifyYiKuai"; // 异步通知URL
+        params.put("pay_notifyurl", notify_url);
+        params.put("pay_callbackurl", notify_url);
 
-        StringBuffer url =  new StringBuffer("id=").append(codepay_id)
-                .append("&notify_url=").append(notify_url)
-                .append("&param=").append(param)
-                .append("&pay_id=").append(pay_id)
-                .append("&price=").append(price)
-                .append("&return_url=").append(return_url)
-                .append("&type=").append(type)
-                .append(key);
 
-        parameter.put("id", codepay_id);
-        parameter.put("notify_url", notify_url);
-        parameter.put("param", param);
-        parameter.put("pay_id", pay_id);
-        parameter.put("price", price);
-        parameter.put("return_url", return_url);
-        parameter.put("type", type);
-        parameter.put("sign", MD5Util.string2MD5(url.toString()));
+        StringBuffer sb = new StringBuffer("pay_amount=").append(params.get("pay_amount"))
+                .append("&pay_applydate=").append(params.get("pay_applydate"))
+                .append("&pay_bankcode=").append(params.get("pay_bankcode"))
+                .append("&pay_callbackurl=").append(params.get("pay_callbackurl"))
+                .append("&pay_memberid=").append(params.get("pay_memberid"))
+                .append("&pay_notifyurl=").append(params.get("pay_notifyurl"))
+                .append("&pay_orderid=").append(params.get("pay_orderid"))
+                .append("&key=").append(key)
+                ;
 
-        return parameter;
+        params.put("sign", MD5Util.string2MD5(sb.toString()).toUpperCase());
+
+        return params;
     }
 
 }

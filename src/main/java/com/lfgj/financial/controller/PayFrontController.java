@@ -183,9 +183,9 @@ public class PayFrontController extends BaseController {
     public String notifyWish(ModelMap mm, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
         log.info("通道（网逸支付）支付异步回调通知:"+this.getParas());
         String result = "fail";
-
+        PrintWriter out = null;
         try {
-            PrintWriter out = response.getWriter();
+            out = response.getWriter();
 
             String status =request.getParameter("status");
             String customerid		=request.getParameter("customerid");
@@ -224,7 +224,8 @@ public class PayFrontController extends BaseController {
 
         }catch(Exception e) {
             log.error(e.getMessage(), e);
-            throw new PayException("系统出现错误!");
+            out.print(" invalid request ");
+            return null;
         }
 
     }
@@ -375,6 +376,54 @@ public class PayFrontController extends BaseController {
 
         return BASE_PATH + "notify_url.html";
     }
+
+
+    /**
+     * 易快支付回调
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyYiKuai")
+    public String notifyYiKuai(ModelMap mm, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+        log.info("通道（易快）支付异步回调通知:"+this.getParas());
+
+        String result = "fail";
+        try {
+            PrintWriter out = response.getWriter();
+
+            String keyValue = ConstConfig.pool.get("pay.yikuai.key");    // 商家密钥
+            String mch_id = this.getParameter("mch_id"); // 分配的商户号
+            String out_trade_no = ConstConfig.pool.get("out_trade_no");   // 提交的订单号
+            String total_fee = this.getParameter("total_fee");// 支付结果
+            String trade_state = this.getParameter("trade_state"); // 交易状态
+            String sign = this.getParameter("sign");// 签名数据
+            boolean isOK = false;
+            String checkSign ="mch_id="+mch_id+"&out_trade_no="+out_trade_no+"&total_fee="+total_fee+"&trade_state="+trade_state+"&key="+keyValue;
+            checkSign = MD5Util.string2MD5(checkSign).toUpperCase();
+            if (checkSign.equals(sign)) {
+
+                if (trade_state.equals("2")) {
+                    boolean b = memberService.updatePayInfo(out_trade_no, out_trade_no, total_fee, false);
+                    out.println("SUCCESS");
+                    return null;
+                }
+            } else {
+                result = "交易签名被篡改!";
+            }
+
+        }catch(Exception e) {
+            log.error(e.getMessage(), e);
+            throw new PayException("系统出现错误!");
+        }
+
+        mm.put("result_info", result);
+
+        return BASE_PATH + "notify_url.html";
+    }
+
+
 
 
     /**

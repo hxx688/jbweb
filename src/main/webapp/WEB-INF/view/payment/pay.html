@@ -27,7 +27,7 @@
 <body>
 <form name="payForm" action="${ctxPath}/payment/toPay" method="post">
     <input type="hidden" name="person_id" value="${person.crypt_id!}"/>
-    <input type="hidden" name="payWay" id="payWay" value="8"/>
+    <input type="hidden" name="payChannel" id="payChannel" value="1"/>
     <input type="hidden" name="payModel" id="payModel" value=""/>
     <input type="hidden" name="payCode" id="payCode" value=""/>
     <div class="page" style="padding-left:30%;padding-right:30%;">
@@ -74,215 +74,70 @@
         <div class="weui-cells__title">支付方式</div>
         <div class="weui-cells weui-cells_radio">
 
-            <label class="weui-cell weui-check__label" for="payWay7">
+            <label class="weui-cell weui-check__label" for="payWay1">
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道一(网银)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道一
                 </div>
                 <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay7" value="yida_bank" />
+                    <input type="radio" name="payWay" class="weui-check" id="payWay1" value="1" />
                     <span class="weui-icon-checked"></span>
                 </div>
             </label>
 
-            <label class="weui-cell weui-check__label" for="payWay8">
+            <label class="weui-cell weui-check__label" for="payWay2">
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道一(快捷)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道二
                 </div>
                 <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay8" value="yida_easy" />
+                    <input type="radio" name="payWay" class="weui-check" id="payWay2" value="2" />
                     <span class="weui-icon-checked"></span>
                 </div>
             </label>
 
 
-            <label class="weui-cell weui-check__label" for="payWay9">
+            <label class="weui-cell weui-check__label" for="payWay3">
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道二(快捷)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道三
                 </div>
                 <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay9" value="shoufu|kuaijie" />
+                    <input type="radio" name="payWay" class="weui-check" id="payWay3" value="3" />
                     <span class="weui-icon-checked"></span>
                 </div>
             </label>
 
-            <label class="weui-cell weui-check__label" for="payWay10">
+            <label class="weui-cell weui-check__label" for="payWay4">
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道二(网银)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道四
                 </div>
                 <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay10" value="shoufu|bank" />
+                    <input type="radio" name="payWay" class="weui-check" id="payWay4" value="4" />
                     <span class="weui-icon-checked"></span>
                 </div>
 
-
             </label>
 
-            <div id="shoufu_banklist" style="display:none;">
-            <!-- test -->
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g1" value="ICBC" type="radio">
-                <label for="g1">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>工商银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g2" value="ABC" type="radio">
-                <label for="g2">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>农业银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g3" value="BOCSH" type="radio">
-                <label for="g3">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>中国银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g4" value="CCB" type="radio">
-                <label for="g4">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>建设银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g5" value="CMB" type="radio">
-                <label for="g5">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>招商银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g6" value="SPDB" type="radio">
-                <label for="g6">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>浦发银行</p></div>
-                </label>
-            </div>
 
 
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g7" value="GDB" type="radio">
-                <label for="g7">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>广发银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g8" value="BOCOM" type="radio">
-                <label for="g8">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>交通银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g9" value="PSBC" type="radio">
-                <label for="g9">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>邮政储蓄</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g10" value="CNCB" type="radio">
-                <label for="g10">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>中信银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g11" value="CMBC" type="radio">
-                <label for="g11">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>民生银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g12" value="CEB" type="radio">
-                <label for="g12">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>光大银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g13" value="HXB" type="radio">
-                <label for="g13">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>华夏银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g14" value="CIB" type="radio">
-                <label for="g14">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>兴业银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g15" value="BOS" type="radio">
-                <label for="g15">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>上海银行</p></div>
-                </label>
-            </div>
-
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g16" value="SRCB" type="radio">
-                <label for="g16">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>上海农商</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g17" value="PAB" type="radio">
-                <label for="g17">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>平安银行</p></div>
-                </label>
-            </div>
-            <div class="weui-form-li iblock">
-                <input class="weui-form-checkbox" name="f2" id="g18" value="BCCB" type="radio">
-                <label for="g18">
-                    <i class="weui-icon-radio"></i>
-                    <div class="weui-form-text"><p>北京银行</p></div>
-                </label>
-            </div>
-
-            </div>
-            <!-- end -->
-
-            <label class="weui-cell weui-check__label" for="payWay11">
+            <label class="weui-cell weui-check__label" for="payWay5">
 
                 <div class="weui-cell__bd">
                     <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">码支付(支付宝)
+                         style="width: 30px; margin-right: 5px; vertical-align: middle;">通道五
                 </div>
                 <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay11" value="mazhifu|1" />
+                    <input type="radio" name="payWay" class="weui-check" id="payWay5" value="5" />
                     <span class="weui-icon-checked"></span>
                 </div>
             </label>
 
-            <label class="weui-cell weui-check__label" for="payWay12">
-
-                <div class="weui-cell__bd">
-                    <img src="${ctxPath}/static/style/images/shanpay.png" alt=""
-                         style="width: 30px; margin-right: 5px; vertical-align: middle;">网逸支付
-                </div>
-                <div class="weui-cell__ft">
-                    <input type="radio" name="payWay" class="weui-check" id="payWay12" value="wish|quickbank" />
-                    <span class="weui-icon-checked"></span>
-                </div>
-            </label>
 
         </div>
         <div class="bd">
@@ -296,57 +151,15 @@
 
 <script type="text/javascript">
 
-    // ********* test ********
-
-
-    // ********* test end  ********
 
     $(function(){
 
-        $(".weui-check").change(
-            function() {
-                var id = $("input[name='payWay']:checked").val();
-                if (id == "shoufu|bank") {
-                    $("#shoufu_banklist").show();
-                }else {
-                    $("#shoufu_banklist").hide();
-                }
-            });
     });
 
     function toPay(){
         var payWay = $("input[name='payWay']:checked").val();
-        $("#payModel").val(payWay);
-        var remark = $("#remark").val();
+        $("#payChannel").val(payWay);
         var total_fee = $.trim($("#money1").val());
-
-        if(payWay == "yida_bank" || payWay == "yida_easy" ) {
-            $("#payWay").val(9);
-        }
-        if(payWay.indexOf("|") != -1) {
-            var strs = payWay.split("|");
-            if(strs[0] == "shoufu"){
-                $("#payWay").val(10);
-                $("#payModel").val(strs[1] );
-
-                if(strs[1] == "bank") {
-                    var payBank = $("input[name='f2']:checked").val();
-                    if (typeof payBank == "undefined" || payBank == "") {
-                        layer.msg("请选择银行支付");
-                        return false;
-                    }
-
-                    $("#payCode").val(payBank);
-                }
-            }else if(strs[0] == "mazhifu"){
-                $("#payWay").val(11);
-                $("#payModel").val(strs[1] );
-            }else if(strs[0] == "wish"){
-                $("#payWay").val(12);
-                $("#payModel").val(strs[1] );
-            }
-        }
-
         if(total_fee == ""){
             layer.msg("金额不能为空",{
                 shift : 6
@@ -358,39 +171,6 @@
 
     };
 
-    /*
-    function toPay(){
-        var payWay = $("input[name='payWay']:checked").val();
-        var remark = $("#remark").val();
-        var total_fee = $.trim($("#money1").val());
-        if(total_fee == ""){
-             layer.msg("金额不能为空",{
-                 shift : 6
-             });
-            return;
-        };
-
-        $.post("${ctxPath}/payment/toPay", {
-            total_fee : total_fee,
-            remark :　remark,
-            payWay : payWay,
-            person_id : "${person.crypt_id!}"
-        }, function(res) {
-            if (res.code == 0) {
-                var path = res.data;
-                window.location.href = path;
-            }else if (res.code == 1) {
-                layer.msg(res.message,{
-                     shift : 6
-                });
-            }else {
-                 layer.msg(res.message, {
-                     shift : 6
-                });
-            };
-        }, "json");
-    };
-    */
 
 </script>
 </html>

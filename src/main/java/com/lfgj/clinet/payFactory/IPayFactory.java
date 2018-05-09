@@ -1,10 +1,6 @@
 package com.lfgj.clinet.payFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.lfgj.clinet.payHqf.PrePayHqfClient;
-import com.rrgy.common.iface.ResultVo;
+import com.lfgj.util.PayTypeEnum;
 
 /**
  * <p>Description: </p>
@@ -16,6 +12,6 @@ import com.rrgy.common.iface.ResultVo;
  */
 public interface IPayFactory {
 
-    public IPayService generatePayService(String payType) throws Exception;
+    public IPayService generatePayService(PayTypeEnum payTypeEnum) throws Exception;
 
 }

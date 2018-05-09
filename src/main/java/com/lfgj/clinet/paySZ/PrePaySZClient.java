@@ -12,8 +12,8 @@ import com.lfgj.clinet.paySZ.util.ConstantSZ;
 import com.lfgj.clinet.paySZ.util.SzPayUtil;
 import com.lfgj.member.model.Member;
 import com.lfgj.member.service.MemberService;
-import com.lfgj.util.CommKit;
 import com.lfgj.util.LfConstant;
+import com.lfgj.util.PayTypeEnum;
 import com.rrgy.common.iface.RequestMethod;
 import com.rrgy.common.iface.ResultVo;
 import com.rrgy.core.annotation.Client;
@@ -66,7 +66,7 @@ public class PrePaySZClient extends RequestMethod{
 		payInfo.setMobile(person.getMobile());
 		payInfo.setPay_acount(person.getBank_acount());
 		payInfo.setPay_type(pay_type);
-		payInfo.setPay_type_name(LfConstant.PAY_TYPE.get(pay_type));
+		payInfo.setPay_type_name(PayTypeEnum.parseByCode(pay_type).getPayName());
 		payInfo.setRespcode("0"); // 未提交
 		payInfo.setRespname(LfConstant.PAY_RESPCODE.get("0"));
 		

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.lfgj.util.PayTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,7 +114,7 @@ public class PrePayClient extends RequestMethod{
 		payInfo.setMobile(person.getMobile());
 		payInfo.setPay_acount(person.getBank_acount());
 		payInfo.setPay_type(pay_type);
-		payInfo.setPay_type_name(LfConstant.PAY_TYPE.get(pay_type));
+		payInfo.setPay_type_name(PayTypeEnum.parseByCode(pay_type).getPayName());
 		payInfo.setRespcode("0"); // 未提交
 		payInfo.setRespname(LfConstant.PAY_RESPCODE.get("0"));
 		

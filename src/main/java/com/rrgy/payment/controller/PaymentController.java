@@ -1,35 +1,27 @@
 package com.rrgy.payment.controller;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
-import com.lfgj.clinet.payFactory.IPayFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
 import com.lfgj.clinet.pay.payment.PayInfo;
-import com.lfgj.clinet.pay.payment.utils.PayUtil;
+import com.lfgj.clinet.payFactory.IPayFactory;
 import com.lfgj.clinet.payHqf.PrePayHqfClient;
 import com.lfgj.financial.service.PayInfoService;
 import com.lfgj.member.model.Member;
 import com.lfgj.member.service.MemberService;
-import com.lfgj.util.CommKit;
 import com.lfgj.util.LfConstant;
+import com.lfgj.util.PayTypeEnum;
 import com.rrgy.common.base.BaseController;
 import com.rrgy.common.iface.ResultVo;
-import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
-import com.rrgy.core.toolbox.ajax.AjaxResult;
 import com.rrgy.core.toolbox.kit.AESKit;
-import com.rrgy.core.toolbox.kit.JsonKit;
 import com.rrgy.core.toolbox.kit.LogKit;
 import com.rrgy.core.toolbox.kit.StrKit;
 
@@ -102,7 +94,7 @@ public class PaymentController extends BaseController {
 	@RequestMapping("/toPay")
 	public String toPay(ModelMap mm) throws Exception {
 		String person_id = getParameter("person_id");
-        String payType = getParameter("payWay");
+        String payChannel = getParameter("payChannel");
         String payModel = getParameter("payModel");
         String payCode = getParameter("payCode");
 
@@ -126,7 +118,9 @@ public class PaymentController extends BaseController {
 		}
 		
 		String orderNo = Func.orderNo("P");
-		
+
+        PayTypeEnum payTypeEnum = cvtPayTypeEnumByChannel(payChannel);
+
 		PayInfo payInfo = new PayInfo();
 		payInfo.setAmount(money);
 		payInfo.setOrdernumber(orderNo);
@@ -135,8 +129,8 @@ public class PaymentController extends BaseController {
 		payInfo.setReal_name(person.getReal_name());
 		payInfo.setMobile(person.getMobile());
 		payInfo.setPay_acount(person.getBank_acount());
-		payInfo.setPay_type(payType);
-		payInfo.setPay_type_name(LfConstant.PAY_TYPE.get(payType));
+		payInfo.setPay_type(payTypeEnum.getPayCode());
+		payInfo.setPay_type_name(payTypeEnum.getPayName());
 		payInfo.setRespcode("0"); // 未提交
 		payInfo.setRespname(LfConstant.PAY_RESPCODE.get("0"));
 		
@@ -148,7 +142,7 @@ public class PaymentController extends BaseController {
 		}
 		PrePayHqfClient pp = new PrePayHqfClient();
 
-        ResultVo payRs = payFactory.generatePayService(payType).getPayUrl(money, orderNo, payModel, payCode);
+        ResultVo payRs = payFactory.generatePayService(payTypeEnum).getPayUrl(money, orderNo, payModel, payCode);
 
 		if("0".equals(payRs.getReturnCode())){
 			mm.put("code", 0);
@@ -165,6 +159,18 @@ public class PaymentController extends BaseController {
 		}
 	}
 
+	private PayTypeEnum cvtPayTypeEnumByChannel(String payChannel) {
+	    if("1".equals(payChannel)) {
+            return PayTypeEnum.MA_PAY;
+        }else if("2".equals(payChannel)){
+	        return PayTypeEnum.WISH_PAY;
+        }else if("3".equals(payChannel)) {
+            return PayTypeEnum.YIKUAI_PAY;
+        }else {
+            // 默认
+            return PayTypeEnum.MA_PAY;
+        }
+    }
 	/*@ResponseBody
 	@RequestMapping("/toPay")
 	public AjaxResult toPay(ModelMap mm) throws Exception {
