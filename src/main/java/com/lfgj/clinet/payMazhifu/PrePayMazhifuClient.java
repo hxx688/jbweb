@@ -1,12 +1,5 @@
 package com.lfgj.clinet.payMazhifu;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.lfgj.clinet.pay.payment.PayInfo;
 import com.lfgj.clinet.pay.payment.utils.MD5Util;
 import com.lfgj.clinet.payFactory.IPayService;
@@ -21,6 +14,13 @@ import com.rrgy.core.annotation.Client;
 import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 支付通道：码支付
@@ -35,12 +35,11 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
     @Autowired
     MemberService service;
 
-    public ResultVo url() {
+    public ResultVo url(HttpServletRequest request) {
         ResultVo rv = new ResultVo();
-        String person_id = getParams("id","");
-        String pay_type = "11";
-        String money = getParams("money","0");
-        String payModel = getParams("payModel", "1");
+        String person_id = request.getParameter("id");
+        String money = request.getParameter("money");
+        String payModel = request.getParameter("payModel");
 
         Member person = Blade.create(Member.class).findById(person_id);
 
@@ -66,8 +65,8 @@ public class PrePayMazhifuClient extends RequestMethod implements IPayService{
         payInfo.setReal_name(person.getReal_name());
         payInfo.setMobile(person.getMobile());
         payInfo.setPay_acount(person.getBank_acount());
-        payInfo.setPay_type(pay_type);
-        payInfo.setPay_type_name(PayTypeEnum.parseByCode(pay_type).getPayName());
+        payInfo.setPay_type(PayTypeEnum.MA_PAY.getPayCode());
+        payInfo.setPay_type_name(PayTypeEnum.MA_PAY.getPayName());
         payInfo.setRespcode("0"); // 未提交
         payInfo.setRespname(LfConstant.PAY_RESPCODE.get("0"));
 

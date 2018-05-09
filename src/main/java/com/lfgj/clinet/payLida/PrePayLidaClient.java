@@ -1,12 +1,5 @@
 package com.lfgj.clinet.payLida;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.lfgj.clinet.pay.payment.PayInfo;
 import com.lfgj.clinet.payFactory.IPayService;
 import com.lfgj.clinet.payHqf.exception.PayException;
@@ -20,6 +13,13 @@ import com.rrgy.core.annotation.Client;
 import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 支付通道：立达付
@@ -34,7 +34,8 @@ public class PrePayLidaClient extends RequestMethod implements IPayService{
 	@Autowired
 	MemberService service;
 	
-	public ResultVo url() {
+	public ResultVo url(HttpServletRequest request) {
+	    this.request = request;
 		ResultVo rv = new ResultVo();
 		String person_id = getParams("id","");	
 		String pay_type = "8"; // 环球付

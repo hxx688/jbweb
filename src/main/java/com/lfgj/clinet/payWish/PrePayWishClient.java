@@ -1,13 +1,5 @@
 package com.lfgj.clinet.payWish;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.lfgj.clinet.pay.payment.PayInfo;
 import com.lfgj.clinet.pay.payment.utils.MD5Util;
 import com.lfgj.clinet.payFactory.IPayService;
@@ -22,6 +14,14 @@ import com.rrgy.core.annotation.Client;
 import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 支付通道：网逸支付
@@ -36,11 +36,10 @@ public class PrePayWishClient extends RequestMethod implements IPayService{
     @Autowired
     MemberService service;
 
-    public ResultVo url() {
+    public ResultVo url(HttpServletRequest request) {
         ResultVo rv = new ResultVo();
-        String person_id = getParams("id","");
-        String pay_type = "12";
-        String money = getParams("money","0");
+        String person_id = request.getParameter("id");
+        String money = request.getParameter("money");
         String payModel = "quickbank";
         Member person = Blade.create(Member.class).findById(person_id);
 
@@ -66,8 +65,8 @@ public class PrePayWishClient extends RequestMethod implements IPayService{
         payInfo.setReal_name(person.getReal_name());
         payInfo.setMobile(person.getMobile());
         payInfo.setPay_acount(person.getBank_acount());
-        payInfo.setPay_type(pay_type);
-        payInfo.setPay_type_name(PayTypeEnum.parseByCode(pay_type).getPayName());
+        payInfo.setPay_type(PayTypeEnum.WISH_PAY.getPayCode());
+        payInfo.setPay_type_name(PayTypeEnum.WISH_PAY.getPayName());
         payInfo.setRespcode("0"); // 未提交
         payInfo.setRespname(LfConstant.PAY_RESPCODE.get("0"));
 
@@ -122,7 +121,7 @@ public class PrePayWishClient extends RequestMethod implements IPayService{
                 + "/payfront/notifyWish"; // 异步通知URL
         params.put("notifyurl", notify_url );
 
-        params.put("returnurl", "" );
+        params.put("returnurl", notify_url );
 
         StringBuffer sb = new StringBuffer("version=").append(params.get("version"))
                 .append("&customerid=").append(params.get("customerid"))

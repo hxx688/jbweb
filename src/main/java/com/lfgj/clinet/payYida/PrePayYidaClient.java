@@ -1,13 +1,5 @@
 package com.lfgj.clinet.payYida;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.lfgj.clinet.pay.payment.PayInfo;
 import com.lfgj.clinet.payFactory.IPayService;
 import com.lfgj.clinet.payHqf.exception.PayException;
@@ -21,6 +13,14 @@ import com.rrgy.core.annotation.Client;
 import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 支付通道：易达付
@@ -35,9 +35,10 @@ public class PrePayYidaClient extends RequestMethod implements IPayService{
 	@Autowired
 	MemberService service;
 	
-	public ResultVo url() {
+	public ResultVo url(HttpServletRequest request) {
+	    this.request = request;
 		ResultVo rv = new ResultVo();
-		String person_id = getParams("id","");	
+		String person_id = getParams("id","");
 		String pay_type = "9"; // 易达付
 		String money = getParams("money","0");
         String payModel = getParams("payModel", "yida_bank");
@@ -88,12 +89,6 @@ public class PrePayYidaClient extends RequestMethod implements IPayService{
 			Map<String,Object> requestParams = getParameter(money, orderNo, extendStrs);
             String payUrl = ConstConfig.pool.get("pay.yida.url");
 			requestParams.put("pay_url", payUrl);
-//			String domain = ConstConfig.pool.get("config.domain");
-//			int i = domain.indexOf("//");
-//			if(i >= 0){
-//				domain = domain.substring(i+2, domain.length());
-//			}
-//			requestParams.put("http_referer", domain); // 这个域名，要和支付通道后台绑定的域名一样，不加http://
 	        rv.setReturnCode("0");
 			rv.setReturnParams(requestParams);
 			log.info("易达支付请求参数："+requestParams);

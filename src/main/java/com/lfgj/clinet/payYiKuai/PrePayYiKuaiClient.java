@@ -1,13 +1,5 @@
 package com.lfgj.clinet.payYiKuai;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.lfgj.clinet.pay.payment.PayInfo;
 import com.lfgj.clinet.pay.payment.utils.MD5Util;
 import com.lfgj.clinet.payFactory.IPayService;
@@ -23,6 +15,15 @@ import com.rrgy.core.annotation.Client;
 import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 支付通道：易快支付
@@ -37,11 +38,10 @@ public class PrePayYiKuaiClient extends RequestMethod implements IPayService{
     @Autowired
     MemberService service;
 
-    public ResultVo url() {
+    public ResultVo url(HttpServletRequest request) {
         ResultVo rv = new ResultVo();
-        String person_id = getParams("id","");
-        String pay_type = "13";
-        String money = getParams("money","0");
+        String person_id = request.getParameter("id");
+        String money = request.getParameter("money");
         String payModel = "WXZF";
         Member person = Blade.create(Member.class).findById(person_id);
 
@@ -67,8 +67,8 @@ public class PrePayYiKuaiClient extends RequestMethod implements IPayService{
         payInfo.setReal_name(person.getReal_name());
         payInfo.setMobile(person.getMobile());
         payInfo.setPay_acount(person.getBank_acount());
-        payInfo.setPay_type(pay_type);
-        payInfo.setPay_type_name(PayTypeEnum.parseByCode(pay_type).getPayName());
+        payInfo.setPay_type(PayTypeEnum.YIKUAI_PAY.getPayCode());
+        payInfo.setPay_type_name(PayTypeEnum.YIKUAI_PAY.getPayName());
         payInfo.setRespcode("0"); // 未提交
         payInfo.setRespname(LfConstant.PAY_RESPCODE.get("0"));
 
@@ -111,7 +111,7 @@ public class PrePayYiKuaiClient extends RequestMethod implements IPayService{
         params.put("pay_memberid", account);
         params.put("pay_orderid", orderNo);
         Double dbMoney = new BigDecimal(money).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        String paymoney = String.format("%.2f", dbMoney); //  String.valueOf(); // 支付金额
+        String paymoney = money; // String.format("%.2f", dbMoney); //  String.valueOf(); // 支付金额
         params.put("pay_amount", paymoney);
 
         params.put("pay_applydate", DateUtils.formatDefault(new Date()));
@@ -120,7 +120,6 @@ public class PrePayYiKuaiClient extends RequestMethod implements IPayService{
                 + "/payfront/notifyYiKuai"; // 异步通知URL
         params.put("pay_notifyurl", notify_url);
         params.put("pay_callbackurl", notify_url);
-
 
         StringBuffer sb = new StringBuffer("pay_amount=").append(params.get("pay_amount"))
                 .append("&pay_applydate=").append(params.get("pay_applydate"))
@@ -132,7 +131,12 @@ public class PrePayYiKuaiClient extends RequestMethod implements IPayService{
                 .append("&key=").append(key)
                 ;
 
-        params.put("sign", MD5Util.string2MD5(sb.toString()).toUpperCase());
+        params.put("pay_md5sign", MD5Util.string2MD5(sb.toString()).toUpperCase());
+
+        System.out.println(System.getProperty("file.encoding"));
+
+        //方法二：中文操作系统中打印GBK
+        System.out.println(Charset.defaultCharset());
 
         return params;
     }

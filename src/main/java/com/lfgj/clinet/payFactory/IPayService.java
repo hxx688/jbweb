@@ -2,6 +2,8 @@ package com.lfgj.clinet.payFactory;
 
 import com.rrgy.common.iface.ResultVo;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>Description: </p>
  * @date 2018/3/27
@@ -13,4 +15,6 @@ import com.rrgy.common.iface.ResultVo;
 public interface IPayService {
 
     public ResultVo getPayUrl(String money, String orderNo, String... extendStrs);
+
+    public ResultVo url(HttpServletRequest request);
 }
