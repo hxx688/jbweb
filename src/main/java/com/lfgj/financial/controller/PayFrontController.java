@@ -213,10 +213,12 @@ public class PayFrontController extends BaseController {
 
                 }else {
                     out.print("fail");
+                    log.info("fail, status: " + status);
 
                 }
             }else {
                 out.print("signerr");
+                log.info("signerr, sign: " + sign + ", mysign: " + mysign);
             }
 
             return null;
@@ -395,7 +397,7 @@ public class PayFrontController extends BaseController {
 
             String keyValue = ConstConfig.pool.get("pay.yikuai.key");    // 商家密钥
             String mch_id = this.getParameter("mch_id"); // 分配的商户号
-            String out_trade_no = ConstConfig.pool.get("out_trade_no");   // 提交的订单号
+            String out_trade_no = this.getParameter("out_trade_no");   // 提交的订单号
             String total_fee = this.getParameter("total_fee");// 支付结果
             String trade_state = this.getParameter("trade_state"); // 交易状态
             String sign = this.getParameter("sign");// 签名数据
@@ -409,8 +411,10 @@ public class PayFrontController extends BaseController {
                     out.println("SUCCESS");
                     return null;
                 }
+                log.info("the trade state: " + trade_state);
             } else {
-                result = "交易签名被篡改!";
+                result = "交易签名被篡改! checkSign: " + checkSign + ", sign: " + sign;
+                log.info(result);
             }
 
         }catch(Exception e) {
