@@ -197,7 +197,7 @@ public class PayFrontController extends BaseController {
             String sign			=request.getParameter("sign");
 
             String userkey = ConstConfig.pool.get("pay.wish.key"); // 商家密钥
-            String acceptParams = "customer-id="+customerid+"&status="+status+"&sdpayno="+sdpayno+"&sdorderno="+sdorderno
+            String acceptParams = "customerid="+customerid+"&status="+status+"&sdpayno="+sdpayno+"&sdorderno="+sdorderno
                     +"&total_fee="+total_fee+"&paytype="+paytype+"&"+userkey;
             log.info("accept params => " + acceptParams);
             String mysign = MD5Util.string2MD5(acceptParams);
@@ -213,10 +213,11 @@ public class PayFrontController extends BaseController {
 
                 }else {
                     out.print("fail");
-
+                    this.log.info("fail, status: " + status);
                 }
             }else {
                 out.print("signerr");
+                this.log.info("signerr, sign: " + sign + ", mysign: " + mysign);
             }
 
             return null;
@@ -386,7 +387,7 @@ public class PayFrontController extends BaseController {
      * @throws PayException
      */
     @RequestMapping("/notifyYiKuai")
-    public String notifyYiKuai(ModelMap mm, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+    public String notifyYiKuai(ModelMap mm, HttpServletRequest request,  HttpServletResponse response) throws UnsupportedEncodingException, PayException{
         log.info("通道（易快）支付异步回调通知:"+this.getParas());
 
         String result = "fail";
@@ -394,13 +395,14 @@ public class PayFrontController extends BaseController {
             PrintWriter out = response.getWriter();
 
             String keyValue = ConstConfig.pool.get("pay.yikuai.key");    // 商家密钥
-            String mch_id = this.getParameter("mch_id"); // 分配的商户号
-            String out_trade_no = ConstConfig.pool.get("out_trade_no");   // 提交的订单号
-            String total_fee = this.getParameter("total_fee");// 支付结果
-            String trade_state = this.getParameter("trade_state"); // 交易状态
-            String sign = this.getParameter("sign");// 签名数据
-            boolean isOK = false;
+
+            String mch_id = request.getParameter("mch_id"); // 分配的商户号
+            String out_trade_no = request.getParameter("out_trade_no");   // 提交的订单号
+            String total_fee = request.getParameter("total_fee");// 支付结果
+            String trade_state = request.getParameter("trade_state"); // 交易状态
+            String sign = request.getParameter("sign");// 签名数据
             String checkSign ="mch_id="+mch_id+"&out_trade_no="+out_trade_no+"&total_fee="+total_fee+"&trade_state="+trade_state+"&key="+keyValue;
+            log.info("the checkSign info: " + checkSign);
             checkSign = MD5Util.string2MD5(checkSign).toUpperCase();
             if (checkSign.equals(sign)) {
 
@@ -409,8 +411,10 @@ public class PayFrontController extends BaseController {
                     out.println("SUCCESS");
                     return null;
                 }
+                this.log.info("the trade state: " + trade_state);
             } else {
-                result = "交易签名被篡改!";
+                result = "交易签名被篡改!checkSign: " + checkSign + ", sign: " + sign;
+                this.log.info(result);
             }
 
         }catch(Exception e) {
