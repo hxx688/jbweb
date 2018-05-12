@@ -30,87 +30,87 @@ import java.util.*;
 @Controller
 @RequestMapping("/payfront")
 public class PayFrontController extends BaseController {
-	private static String BASE_PATH = "/payfront/";
-	
-	@Autowired
-	MemberService memberService;
-	
-	@RequestMapping("/result")
-	public String index(ModelMap mm) {
-		return BASE_PATH + "showresult.html";
-	}
-	
-	/**
-	 * 深圳
-	 * @param mm
-	 * @return
-	 */
-	@RequestMapping("/notifySz")
-	public String notifySz(ModelMap mm){
-		System.out.println("通道（深圳）支付异步通知:"+this.getParas());
-		
-		// 获取支付平台返回的数据
-		String pay_order_id = this.getParameter("pay_order_id","");
-		String pay_amount = this.getParameter("pay_amount","");
-		String pay_remark = this.getParameter("pay_remark","");
-		String pay_product_name = this.getParameter("pay_product_name","");
-		String sign = this.getParameter("sign","");
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("pay_order_id", pay_order_id);
-		map.put("pay_amount", pay_amount);
-		map.put("pay_remark", pay_remark);
-		map.put("pay_product_name", pay_product_name);
-		
-		String key = CommKit.getParameter("311").getPara();
-		String chesign = SzPayUtil.createSign(map, key);
-		
-		System.out.println("chesign:"+chesign);
-		
-		String result = "error";
-		if(sign.equals(chesign)){
-			boolean b = memberService.updatePayInfo(pay_order_id, pay_order_id, pay_amount, true);
-			if(b){
-				result = "ok";
-			}
-		}
-		
-		mm.put("result_info", result);
-		return BASE_PATH + "notify_url.html";
-	}
-	
-	/**
-	 * 环球付
-	 * @param mm
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 * @throws PayException
-	 */
-	@RequestMapping("/notifyHqf")
-	public String notifyHqf(ModelMap mm) throws UnsupportedEncodingException, PayException{
-		System.out.println("通道（环球付）支付异步通知:"+this.getParas());
-		
-		boolean shanNotify = md5VerifyShan(this.getRequest());
-		String result = "fail";
-		if(shanNotify){
-			if("TRADE_SUCCESS".equals(this.getParameter("trade_status"))){
-				//商户订单号
-				String out_order_no = this.getParameter("out_order_no","");
-				//环球汇交易号
-				String trade_no = this.getParameter("trade_no","");
-				//价格
-				String total_fee = this.getParameter("total_fee","");
-				
-				boolean b = memberService.updatePayInfo(out_order_no, trade_no, total_fee, false);
-				if(b){
-					result = "ok";
-				}
-			}
-		}
-		
-		mm.put("result_info", result);
-		return BASE_PATH + "notify_url.html";
-	}
+    private static String BASE_PATH = "/payfront/";
+
+    @Autowired
+    MemberService memberService;
+
+    @RequestMapping("/result")
+    public String index(ModelMap mm) {
+        return BASE_PATH + "showresult.html";
+    }
+
+    /**
+     * 深圳
+     * @param mm
+     * @return
+     */
+    @RequestMapping("/notifySz")
+    public String notifySz(ModelMap mm){
+        System.out.println("通道（深圳）支付异步通知:"+this.getParas());
+
+        // 获取支付平台返回的数据
+        String pay_order_id = this.getParameter("pay_order_id","");
+        String pay_amount = this.getParameter("pay_amount","");
+        String pay_remark = this.getParameter("pay_remark","");
+        String pay_product_name = this.getParameter("pay_product_name","");
+        String sign = this.getParameter("sign","");
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("pay_order_id", pay_order_id);
+        map.put("pay_amount", pay_amount);
+        map.put("pay_remark", pay_remark);
+        map.put("pay_product_name", pay_product_name);
+
+        String key = CommKit.getParameter("311").getPara();
+        String chesign = SzPayUtil.createSign(map, key);
+
+        System.out.println("chesign:"+chesign);
+
+        String result = "error";
+        if(sign.equals(chesign)){
+            boolean b = memberService.updatePayInfo(pay_order_id, pay_order_id, pay_amount, true);
+            if(b){
+                result = "ok";
+            }
+        }
+
+        mm.put("result_info", result);
+        return BASE_PATH + "notify_url.html";
+    }
+
+    /**
+     * 环球付
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyHqf")
+    public String notifyHqf(ModelMap mm) throws UnsupportedEncodingException, PayException{
+        System.out.println("通道（环球付）支付异步通知:"+this.getParas());
+
+        boolean shanNotify = md5VerifyShan(this.getRequest());
+        String result = "fail";
+        if(shanNotify){
+            if("TRADE_SUCCESS".equals(this.getParameter("trade_status"))){
+                //商户订单号
+                String out_order_no = this.getParameter("out_order_no","");
+                //环球汇交易号
+                String trade_no = this.getParameter("trade_no","");
+                //价格
+                String total_fee = this.getParameter("total_fee","");
+
+                boolean b = memberService.updatePayInfo(out_order_no, trade_no, total_fee, false);
+                if(b){
+                    result = "ok";
+                }
+            }
+        }
+
+        mm.put("result_info", result);
+        return BASE_PATH + "notify_url.html";
+    }
 
 
 
@@ -197,7 +197,7 @@ public class PayFrontController extends BaseController {
             String sign			=request.getParameter("sign");
 
             String userkey = ConstConfig.pool.get("pay.wish.key"); // 商家密钥
-            String acceptParams = "customer-id="+customerid+"&status="+status+"&sdpayno="+sdpayno+"&sdorderno="+sdorderno
+            String acceptParams = "customerid="+customerid+"&status="+status+"&sdpayno="+sdpayno+"&sdorderno="+sdorderno
                     +"&total_fee="+total_fee+"&paytype="+paytype+"&"+userkey;
             log.info("accept params => " + acceptParams);
             String mysign = MD5Util.string2MD5(acceptParams);
@@ -213,12 +213,11 @@ public class PayFrontController extends BaseController {
 
                 }else {
                     out.print("fail");
-                    log.info("fail, status: " + status);
-
+                    this.log.info("fail, status: " + status);
                 }
             }else {
                 out.print("signerr");
-                log.info("signerr, sign: " + sign + ", mysign: " + mysign);
+                this.log.info("signerr, sign: " + sign + ", mysign: " + mysign);
             }
 
             return null;
@@ -283,7 +282,7 @@ public class PayFrontController extends BaseController {
                 }
             }
 
-           String mySign = MD5Util.string2MD5(prestr+key);
+            String mySign = MD5Util.string2MD5(prestr+key);
 //            MessageDigest md = MessageDigest.getInstance("MD5");
 //            md.update((prestr+key).getBytes());
 //            String  mySign = new BigInteger(1, md.digest()).toString(16).toLowerCase();
@@ -388,7 +387,7 @@ public class PayFrontController extends BaseController {
      * @throws PayException
      */
     @RequestMapping("/notifyYiKuai")
-    public String notifyYiKuai(ModelMap mm, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+    public String notifyYiKuai(ModelMap mm, HttpServletRequest request,  HttpServletResponse response) throws UnsupportedEncodingException, PayException{
         log.info("通道（易快）支付异步回调通知:"+this.getParas());
 
         String result = "fail";
@@ -396,13 +395,14 @@ public class PayFrontController extends BaseController {
             PrintWriter out = response.getWriter();
 
             String keyValue = ConstConfig.pool.get("pay.yikuai.key");    // 商家密钥
-            String mch_id = this.getParameter("mch_id"); // 分配的商户号
-            String out_trade_no = this.getParameter("out_trade_no");   // 提交的订单号
-            String total_fee = this.getParameter("total_fee");// 支付结果
-            String trade_state = this.getParameter("trade_state"); // 交易状态
-            String sign = this.getParameter("sign");// 签名数据
-            boolean isOK = false;
+
+            String mch_id = request.getParameter("mch_id"); // 分配的商户号
+            String out_trade_no = request.getParameter("out_trade_no");   // 提交的订单号
+            String total_fee = request.getParameter("total_fee");// 支付结果
+            String trade_state = request.getParameter("trade_state"); // 交易状态
+            String sign = request.getParameter("sign");// 签名数据
             String checkSign ="mch_id="+mch_id+"&out_trade_no="+out_trade_no+"&total_fee="+total_fee+"&trade_state="+trade_state+"&key="+keyValue;
+            log.info("the checkSign info: " + checkSign);
             checkSign = MD5Util.string2MD5(checkSign).toUpperCase();
             if (checkSign.equals(sign)) {
 
@@ -411,10 +411,10 @@ public class PayFrontController extends BaseController {
                     out.println("SUCCESS");
                     return null;
                 }
-                log.info("the trade state: " + trade_state);
+                this.log.info("the trade state: " + trade_state);
             } else {
-                result = "交易签名被篡改! checkSign: " + checkSign + ", sign: " + sign;
-                log.info(result);
+                result = "交易签名被篡改!checkSign: " + checkSign + ", sign: " + sign;
+                this.log.info(result);
             }
 
         }catch(Exception e) {
@@ -474,10 +474,10 @@ public class PayFrontController extends BaseController {
                 //价格
                 String total_fee = tradeAmt;
 
-                        result = "支付结果: 支付成功!";
-                        boolean b = memberService.updatePayInfo(out_order_no, trade_no, total_fee, false);
-                        out.println("SUCCESS");
-                        return null;
+                result = "支付结果: 支付成功!";
+                boolean b = memberService.updatePayInfo(out_order_no, trade_no, total_fee, false);
+                out.println("SUCCESS");
+                return null;
             } else {
                 result = "交易签名被篡改!";
             }
@@ -492,40 +492,40 @@ public class PayFrontController extends BaseController {
         return BASE_PATH + "notify_url.html";
     }
 
-	/**
-	 * 环球付验签方法
-	 * @param request
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 * @throws PayException
-	 */
-	private boolean md5VerifyShan(HttpServletRequest request) throws UnsupportedEncodingException, PayException{
-		
-		request.setCharacterEncoding("UTF-8");
-		String out_order_no = request.getParameter("out_order_no");
-		if("".equals(out_order_no)||out_order_no==null){
-			throw new PayException("out_order_no不能为空");
-		}
-		String total_fee = request.getParameter("total_fee");
-		if("".equals(total_fee)||total_fee==null){
-			throw new PayException("total_fee不能为空");
-		}
-		String trade_status  = request.getParameter("trade_status");
-		if("".equals(total_fee)||total_fee==null){
-			throw new PayException("trade_status不能为空");
-		}
-		String sign = request.getParameter("sign");
-		if("".equals(total_fee)||total_fee==null){
-			throw new PayException("sign不能为空");
-		}
-		String key = ConstantHqf.KEY;
-		String pid = ConstantHqf.PARTNER;
-		Md5Util md5Util = new Md5Util();
-		String signMd5 = md5Util.encode(out_order_no+total_fee+trade_status+pid+key, null);
-		if(signMd5.equals(sign)){
-			return true;
-		}
-		return false;
-	}
-	
+    /**
+     * 环球付验签方法
+     * @param request
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    private boolean md5VerifyShan(HttpServletRequest request) throws UnsupportedEncodingException, PayException{
+
+        request.setCharacterEncoding("UTF-8");
+        String out_order_no = request.getParameter("out_order_no");
+        if("".equals(out_order_no)||out_order_no==null){
+            throw new PayException("out_order_no不能为空");
+        }
+        String total_fee = request.getParameter("total_fee");
+        if("".equals(total_fee)||total_fee==null){
+            throw new PayException("total_fee不能为空");
+        }
+        String trade_status  = request.getParameter("trade_status");
+        if("".equals(total_fee)||total_fee==null){
+            throw new PayException("trade_status不能为空");
+        }
+        String sign = request.getParameter("sign");
+        if("".equals(total_fee)||total_fee==null){
+            throw new PayException("sign不能为空");
+        }
+        String key = ConstantHqf.KEY;
+        String pid = ConstantHqf.PARTNER;
+        Md5Util md5Util = new Md5Util();
+        String signMd5 = md5Util.encode(out_order_no+total_fee+trade_status+pid+key, null);
+        if(signMd5.equals(sign)){
+            return true;
+        }
+        return false;
+    }
+
 }
