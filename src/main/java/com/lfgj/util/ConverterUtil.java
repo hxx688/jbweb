@@ -14,9 +14,9 @@ public class ConverterUtil {
         if("1".equals(payChannel)) {
             return PayTypeEnum.MA_PAY;
         }else if("2".equals(payChannel)){
-            return PayTypeEnum.WISH_PAY;
+            return PayTypeEnum.YIFU_PAY;
         }else if("3".equals(payChannel)) {
-            return PayTypeEnum.YIKUAI_PAY;
+            return PayTypeEnum.YIFU_PAY;
         }else {
             // 默认
             return PayTypeEnum.MA_PAY;
