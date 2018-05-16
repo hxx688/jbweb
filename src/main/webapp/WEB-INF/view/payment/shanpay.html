@@ -8,10 +8,10 @@
 <br />
 <br />
 <form id='paysubmit' name='paysubmit' action='${gateway_new}' accept-charset='utf-8'
-      @if(!isEmpty(data.pageMethod) && data.pageMethod=='get'){
+      @if(!isEmpty(payType) && payType =='14'){
       method="get"
       @}else{
-      method='get'
+      method='post'
       @}
      >
 	@for(entry in data){

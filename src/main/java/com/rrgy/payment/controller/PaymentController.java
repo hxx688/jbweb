@@ -149,6 +149,7 @@ public class PaymentController extends BaseController {
 			Map<String,Object> data = (Map<String,Object>)payRs.getReturnParams();
 			
 			mm.put("gateway_new", data.get("pay_url"));
+			mm.put("payType", payTypeEnum.getPayCode());
 			data.remove("pay_url");
 			mm.put("data", data);
 			return BASE_PATH + "shanpay.html";

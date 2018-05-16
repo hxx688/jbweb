@@ -9,13 +9,16 @@ import com.lfgj.clinet.paySZ.util.SzPayUtil;
 import com.lfgj.clinet.payYida.Mobo360SignUtil;
 import com.lfgj.member.service.MemberService;
 import com.lfgj.util.CommKit;
+import com.lfgj.util.RSAUtils;
 import com.rrgy.common.base.BaseController;
 import com.rrgy.core.constant.ConstConfig;
-import com.rrgy.core.toolbox.kit.HttpKit;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -376,6 +379,64 @@ public class PayFrontController extends BaseController {
         mm.put("result_info", result);
 
         return BASE_PATH + "notify_url.html";
+    }
+
+    /**
+     * 易付支付回调
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyYiFu")
+    public String notifyYiFu(@RequestBody String request, ModelMap mm, HttpServletRequest httpRequest, HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+        log.info("易付支付异步回调通知:"+this.getParas());
+        String result = "fail";
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+
+            String publicKey = ConstConfig.pool.get("pay.yifu.public"); // 商家公钥
+            String privateKey = ConstConfig.pool.get("pay.yifu.private"); // 商家私钥
+
+            JSONObject jsonResult = JSONObject.fromObject(request);
+            String resultContext = jsonResult.getString("context");
+            String decrypt = RSAUtils.decryptByPrivateKey(resultContext, privateKey);
+            JSONObject resp = JSONObject.fromObject(decrypt);
+            JSONObject respContext = resp.getJSONObject("businessContext");
+
+            log.info("[解密后结果: " +  decrypt);
+            boolean isVerify = RSAUtils.verify(decrypt, publicKey);
+            log.info("[验签结果: " + isVerify);
+
+            if(isVerify) {
+
+                String payOrderNumber =respContext.getString("payOrderNumber");  // 易付在线单号
+                String orderNumber		=respContext.getString("orderNumber"); // 商户单号
+                String orderStatus		=respContext.getString("orderStatus");  // 交易状态
+                String orderTime		=respContext.getString("orderTime");  // 交易时间
+                String currency			=respContext.getString("currency");  // 币种
+                String amount			=respContext.getString("amount");  // 交易金额
+                String fee			=respContext.getString("fee");  // 交易手续费
+                String payType			=respContext.getString("payType");  // 交易类型
+
+                boolean b = memberService.updatePayInfo(orderNumber, payOrderNumber, amount, true);
+                log.info("返写成功: " + b);
+                out.print("SUC");
+            } else {
+                out.print("FAILED");
+                log.info("verify failed. " );
+            }
+
+            return null;
+
+
+        }catch(Exception e) {
+            log.error(e.getMessage(), e);
+            out.print(" invalid request ");
+            return null;
+        }
+
     }
 
 

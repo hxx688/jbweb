@@ -5,7 +5,10 @@ import com.lfgj.clinet.payFactory.IPayService;
 import com.lfgj.clinet.payHqf.exception.PayException;
 import com.lfgj.member.model.Member;
 import com.lfgj.member.service.MemberService;
-import com.lfgj.util.*;
+import com.lfgj.util.DateUtils;
+import com.lfgj.util.LfConstant;
+import com.lfgj.util.PayTypeEnum;
+import com.lfgj.util.RSAUtils;
 import com.rrgy.common.iface.RequestMethod;
 import com.rrgy.common.iface.ResultVo;
 import com.rrgy.core.annotation.Client;
@@ -15,11 +18,12 @@ import com.rrgy.core.toolbox.Func;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -89,7 +93,6 @@ public class PrePayYiFuClient extends RequestMethod implements IPayService{
             Map<String,Object> requestParams = getParameter(money, orderNo, payModel);
             String payUrl = ConstConfig.pool.get("pay.yifu.url");
             requestParams.put("pay_url", payUrl);
-//            requestParams.put("pageMethod", "get");
             rv.setReturnCode("0");
             rv.setReturnParams(requestParams);
             log.info("易付支付请求参数："+requestParams);
@@ -124,7 +127,7 @@ public class PrePayYiFuClient extends RequestMethod implements IPayService{
         businessContext.put("amount", dbMoney);//金额 单位 分
         businessContext.put("currency", "CNY");
         businessContext.put("orderCreateIp", "127.0.0.1");
-        businessContext.put("vaildTime", "1800");
+        businessContext.put("bankNumber", "1000");
         businessContext.put("commodityName", "jubao_product");
         businessContext.put("commodityDesc", "jubao_desc");
         businessContext.put("commodityRemark", "jubao_remark");
@@ -132,22 +135,12 @@ public class PrePayYiFuClient extends RequestMethod implements IPayService{
                 + "/payfront/notifyYiFu"; // 异步通知URL
         businessContext.put("notifyUrl", notify_url);
 
-        System.out.println(System.getProperty("file.encoding"));
-
-        //方法二：中文操作系统中打印GBK
-        System.out.println(Charset.defaultCharset());
-
         String context = null;
         log.info("businessHead: " + businessHead.toString());
         log.info("businessContext: " + businessContext.toString());
         try {
-            businessHead = JSONObject.fromObject("{\"merchantNumber\":\"PAY000209000214\",\"version\":\"V1.1.0\",\"requestTime\":\"20180515223316\"}");
-            businessContext = JSONObject.fromObject("{\"orderNumber\":\"P18051522331609680\",\"payType\":\"QUICK_SAVINGS\",\"amount\":100,\"currency\":\"CNY\",\"orderCreateIp\":\"127.0.0.1\",\"vaildTime\":\"1800\",\"commodityName\":\"jubao_product\",\"commodityDesc\":\"jubao_desc\",\"commodityRemark\":\"jubao_remark\",\"notifyUrl\":\"http://mobile.octtest.mopon.cn:81/payfront/notifyYiFu\"}");
             context = RSAUtils.verifyAndEncryptionToString(businessContext, businessHead, privateKey, publicKey);
-            JSONObject jsonResult = HttpClients.doGet(ConstConfig.pool.get("pay.yifu.url"), context);
-            log.info("[Get后结果jsonResult] : {}", jsonResult);
-
-            params.put("context", URLEncoder.encode(context, "UTF-8"));
+            params.put("context", context);
         } catch (Exception e) {
             log.error("签名加密错误!" + e.getMessage(), e);
             throw new PayException ("签名加密错误!");
@@ -157,4 +150,9 @@ public class PrePayYiFuClient extends RequestMethod implements IPayService{
         return params;
     }
 
+
+
+
 }
+
+
