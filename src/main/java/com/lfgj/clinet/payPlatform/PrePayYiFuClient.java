@@ -93,6 +93,7 @@ public class PrePayYiFuClient extends RequestMethod implements IPayService{
             Map<String,Object> requestParams = getParameter(money, orderNo, payModel);
             String payUrl = ConstConfig.pool.get("pay.yifu.url");
             requestParams.put("pay_url", payUrl);
+            requestParams.put("mobile_param", "get");
             rv.setReturnCode("0");
             rv.setReturnParams(requestParams);
             log.info("易付支付请求参数："+requestParams);

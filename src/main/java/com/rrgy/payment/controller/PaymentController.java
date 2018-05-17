@@ -151,6 +151,7 @@ public class PaymentController extends BaseController {
 			mm.put("gateway_new", data.get("pay_url"));
 			mm.put("payType", payTypeEnum.getPayCode());
 			data.remove("pay_url");
+			data.remove("mobile_param");
 			mm.put("data", data);
 			return BASE_PATH + "shanpay.html";
 		}else{
