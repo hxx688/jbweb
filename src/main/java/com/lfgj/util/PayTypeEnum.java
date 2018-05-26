@@ -23,6 +23,7 @@ public enum PayTypeEnum {
     WISH_PAY("12", "网逸支付"),
     YIKUAI_PAY("13", "易快支付"),
     YIFU_PAY("14", "易付"),
+    BAOBAO_PAY("15", "宝宝支付"),
 
     ;
     private String payCode;

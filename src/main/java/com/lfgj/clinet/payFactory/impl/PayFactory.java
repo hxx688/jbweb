@@ -43,6 +43,9 @@ public class PayFactory implements IPayFactory {
     @Autowired
     private IPayService prePayYiFuClient;
 
+    @Autowired
+    private IPayService prePayBaoBaoClient;
+
     @Override
     public IPayService generatePayService(PayTypeEnum payType) throws Exception{
 
@@ -63,6 +66,8 @@ public class PayFactory implements IPayFactory {
                 return prePayYiKuaiClient;
             case YIFU_PAY:
                 return prePayYiFuClient;
+            case BAOBAO_PAY:
+                return prePayBaoBaoClient;
             default:
                 throw new Exception("支付渠道不存在!");
 

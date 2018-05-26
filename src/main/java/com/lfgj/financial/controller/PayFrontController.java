@@ -490,6 +490,57 @@ public class PayFrontController extends BaseController {
 
 
 
+    /**
+     * 宝宝支付回调
+     * @param mm
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PayException
+     */
+    @RequestMapping("/notifyBaoBao")
+    public String notifyBaoBao(ModelMap mm, HttpServletRequest request,  HttpServletResponse response) throws UnsupportedEncodingException, PayException{
+        log.info("通道（宝宝）支付异步回调通知:"+this.getParas());
+
+        String result = "fail";
+        try {
+            PrintWriter out = response.getWriter();
+
+            String keyValue = ConstConfig.pool.get("pay.baobao.key");    // 商家密钥
+            String pid = ConstConfig.pool.get("pay.baobao.pid");    // 商家pid
+
+            String out_order_no = request.getParameter("out_order_no"); // 分配的商户号
+            String total_fee = request.getParameter("total_fee");   // 提交的订单号
+            String trade_status = request.getParameter("trade_status");// 支付结果
+            String sign = request.getParameter("sign");// 签名数据
+
+            String checkSign =out_order_no + total_fee + trade_status + pid + keyValue;
+            log.info("the checkSign info: " + checkSign);
+            checkSign = MD5Util.string2MD5(checkSign).toUpperCase();
+            if (null != sign && checkSign.equals(sign.toUpperCase())) {
+
+                if ("TRADE_SUCCESS".equals(trade_status)) {
+                    boolean b = memberService.updatePayInfo(out_order_no, out_order_no, total_fee, false);
+                    out.println("true");
+                    return null;
+                }
+                result = "fail: " + trade_status;
+                this.log.info("the trade state: " + trade_status);
+            } else {
+                result = "交易签名被篡改!checkSign: " + checkSign + ", sign: " + sign;
+                this.log.info(result);
+            }
+
+        }catch(Exception e) {
+            log.error(e.getMessage(), e);
+            throw new PayException("系统出现错误!");
+        }
+
+        mm.put("result_info", result);
+
+        return BASE_PATH + "notify_url.html";
+    }
+
+
 
     /**
      * 易达付
