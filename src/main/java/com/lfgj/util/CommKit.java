@@ -126,22 +126,26 @@ public class CommKit {
 		String query = "Date,Symbol,Name,Close,Open,High,Low";
 //		String url = stock + "/kline.php?u=" + user + "&p=" + password + "&q_type=0&qt_type=" + q_type + "&return_t="
 //				+ type + "&r_type=2&symbol=" + symbol + "&query=" + query;
-		String url = stock +"/stock.php?u="+user + "&p=" + password + "&type=kline&line=min,5&symbol" + symbol;
-		Long startTime = System.currentTimeMillis();
+		String url = stock +"/stock.php?u="+user + "&p=" + password + "&type=kline&symbol=" + symbol;
+		String line = "min,5";
+//        DateTime time = DateTimeKit.offsiteDate(new Date(), Calendar.HOUR, -6);
+        Long startTime = System.currentTimeMillis();//time.getTime();
         if ("3".equals(type)) {
 			String yester = DateTimeKit.yesterday().toString(DateKit.DATE_FORMATE);
             startTime = DateTimeKit.yesterday().getTime();
 			if ("5".equals(q_type)) {
-				DateTime time = DateTimeKit.offsiteDate(new Date(), Calendar.HOUR, -6);
-                startTime = time.getTime();
-				yester = time.toString(DateKit.DATETIME_FORMATE);
-				yester = yester.replaceAll(" ", "%20");
-//				url += "&stime=" + yester;
-			} //else {
-//				url += "&stime=" + yester;
-			//}
-		}
-        url +="&st=" + (startTime/ 1000);
+                line = "min,5";
+//				yester = time.toString(DateKit.DATETIME_FORMATE);
+//				yester = yester.replaceAll(" ", "%20");
+			} else if("30".equals(q_type)) {
+                line = "min,30";
+		    }else if("60".equals(q_type)) {
+                line = "min,60";
+            }
+		}else if("0".equals(type)) {
+            line = "day";
+        }
+        url +="&line=" + line + "&st=" + (startTime/ 1000);
 
 		String json = HttpKit.post(url);
 		JSONArray jsarr = null;
@@ -174,6 +178,7 @@ public class CommKit {
 			if(null != date) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 date = sdf.format(new Date(Long.valueOf(date)*1000L));
+                jsonobj.put("Date", date);
             }
 			String code = jsonobj.getString("Symbol");
 			Product product = products.get(code);

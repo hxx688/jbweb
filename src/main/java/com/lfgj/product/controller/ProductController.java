@@ -213,14 +213,22 @@ public class ProductController extends BaseController {
                 e.printStackTrace();  
             }
         	
-        	System.out.println(DateKit.getTime()+":"+ps.getCode()+"周线图");
-        	CommKit.fillList(ps.getCode(),"2","",0);
-			try {
-                Thread.sleep(LfConstant.time);  
-            } catch (InterruptedException e) {  
-                e.printStackTrace();  
-            } 
-		}
+        	System.out.println(DateKit.getTime()+":"+ps.getCode()+"60分钟线图");
+            CommKit.fillList(ps.getCode(),"3","60",0);
+            try {
+                Thread.sleep(LfConstant.time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(DateKit.getTime()+":"+ps.getCode()+"日线图");
+            CommKit.fillList(ps.getCode(),"0",null,0);
+            try {
+                Thread.sleep(LfConstant.time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 		return success("刷新成功");
 	}
 }

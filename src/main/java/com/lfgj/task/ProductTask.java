@@ -131,6 +131,8 @@ public class ProductTask implements Runnable {
             if(null != date) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 date = sdf.format(new Date(Long.valueOf(date)*1000L));
+                jsonobj.put("Date", date);
+
             }
 			String code = jsonobj.getString("Symbol");
 			BigDecimal NewPrice = jsonobj.getBigDecimal("NewPrice");
