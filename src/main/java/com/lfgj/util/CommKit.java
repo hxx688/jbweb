@@ -1,12 +1,5 @@
 package com.lfgj.util;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -21,14 +14,13 @@ import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.plugins.dao.Md;
 import com.rrgy.core.toolbox.Func;
 import com.rrgy.core.toolbox.Paras;
-import com.rrgy.core.toolbox.kit.CacheKit;
-import com.rrgy.core.toolbox.kit.DateKit;
-import com.rrgy.core.toolbox.kit.DateTimeKit;
-import com.rrgy.core.toolbox.kit.HttpKit;
-import com.rrgy.core.toolbox.kit.JsonKit;
-import com.rrgy.core.toolbox.kit.MathKit;
+import com.rrgy.core.toolbox.kit.*;
 import com.rrgy.core.toolbox.support.DateTime;
 import com.rrgy.system.model.Parameter;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class CommKit {
 
@@ -132,19 +124,24 @@ public class CommKit {
 		String user = ConstConfig.pool.get("user");
 		String password = ConstConfig.pool.get("password");
 		String query = "Date,Symbol,Name,Close,Open,High,Low";
-		String url = stock + "/kline.php?u=" + user + "&p=" + password + "&q_type=0&qt_type=" + q_type + "&return_t="
-				+ type + "&r_type=2&symbol=" + symbol + "&query=" + query;
-		if ("3".equals(type)) {
+//		String url = stock + "/kline.php?u=" + user + "&p=" + password + "&q_type=0&qt_type=" + q_type + "&return_t="
+//				+ type + "&r_type=2&symbol=" + symbol + "&query=" + query;
+		String url = stock +"/stock.php?u="+user + "&p=" + password + "&type=kline&line=min,5&symbol" + symbol;
+		Long startTime = System.currentTimeMillis();
+        if ("3".equals(type)) {
 			String yester = DateTimeKit.yesterday().toString(DateKit.DATE_FORMATE);
+            startTime = DateTimeKit.yesterday().getTime();
 			if ("5".equals(q_type)) {
 				DateTime time = DateTimeKit.offsiteDate(new Date(), Calendar.HOUR, -6);
+                startTime = time.getTime();
 				yester = time.toString(DateKit.DATETIME_FORMATE);
 				yester = yester.replaceAll(" ", "%20");
-				url += "&stime=" + yester;
-			} else {
-				url += "&stime=" + yester;
-			}
+//				url += "&stime=" + yester;
+			} //else {
+//				url += "&stime=" + yester;
+			//}
 		}
+        url +="&st=" + (startTime/ 1000);
 
 		String json = HttpKit.post(url);
 		JSONArray jsarr = null;
@@ -174,6 +171,10 @@ public class CommKit {
 		for (int x = 0; x < jsarr.size(); x++) {
 			JSONObject jsonobj = (JSONObject) jsarr.get(x);
 			String date = jsonobj.getString("Date");
+			if(null != date) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                date = sdf.format(new Date(Long.valueOf(date)*1000L));
+            }
 			String code = jsonobj.getString("Symbol");
 			Product product = products.get(code);
 						
