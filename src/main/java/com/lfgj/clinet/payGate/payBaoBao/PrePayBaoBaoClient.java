@@ -127,6 +127,7 @@ public class PrePayBaoBaoClient extends RequestMethod implements IPayService{
         String signContent = sb.toString().replaceAll("&$", "") + key;
         log.info("baobao pay signContent: " + signContent);
         params.put("sign", MD5Util.string2MD5(signContent));
+        params.put("http_referer", ConstConfig.pool.get("config.domain"));
         return params;
     }
 

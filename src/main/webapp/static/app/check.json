@@ -1,0 +1,17 @@
+{
+  "appid": "H5F94A4F8",
+  "iOS": {
+    "version": "1.4.2",
+    "title": "版本更新",
+    "note": "新增自动升级检测功能\n新增分享功能演示页面\n新增推送功能演示页面\n",
+    "apkUrl": "/static/app/app.ipa",
+    "url": "/static/app/app-142.wgt"
+  },
+  "Android": {
+    "version": "1.5.6",
+    "title": "版本更新",
+    "note": "修复BUG",
+    "apkUrl": "/static/app/app.apk",
+    "url": "/static/app/app-156.wgt"
+  }
+}
