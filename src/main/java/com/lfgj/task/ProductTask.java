@@ -1,9 +1,5 @@
 package com.lfgj.task;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -17,11 +13,13 @@ import com.lfgj.util.LfConstant;
 import com.rrgy.core.constant.ConstConfig;
 import com.rrgy.core.plugins.dao.Blade;
 import com.rrgy.core.toolbox.Func;
-import com.rrgy.core.toolbox.kit.CacheKit;
-import com.rrgy.core.toolbox.kit.DateKit;
-import com.rrgy.core.toolbox.kit.HttpKit;
-import com.rrgy.core.toolbox.kit.JsonKit;
-import com.rrgy.core.toolbox.kit.MathKit;
+import com.rrgy.core.toolbox.kit.*;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -130,6 +128,10 @@ public class ProductTask implements Runnable {
 		for(int x =0;x<jsarr.size();x++){			
 			JSONObject jsonobj = (JSONObject) jsarr.get(x);
 			String date = jsonobj.getString("Date");
+            if(null != date) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                date = sdf.format(new Date(Long.valueOf(date)*1000L));
+            }
 			String code = jsonobj.getString("Symbol");
 			BigDecimal NewPrice = jsonobj.getBigDecimal("NewPrice");
 			if(NewPrice.floatValue()<=0){
@@ -243,12 +245,10 @@ public class ProductTask implements Runnable {
 		String user = ConstConfig.pool.get("user");
 		String password = ConstConfig.pool.get("password");
 		String query = "Date,Symbol,Name,LastClose,Open,High,Low,NewPrice";
-		String url = stock+"/stock.php?u="+user+"&p="+password+"&r_type=2&symbol="+symbol+"&query="+query;
+//		String url = stock+"/stock.php?u="+user+"&p="+password+"&r_type=2&symbol="+symbol+"&query="+query;
+		String url = stock+ "/stock.php?u=" + user + "&p=" + password + "&market=BS&type=stock&symbol=" + symbol + "&column=Date,Symbol,Name,LastClose,Open,High,Low,NewPrice";
 		return url;
 	}
 	
-	public static void main(String[] args) {
-		
-	}
-	
+
 }
